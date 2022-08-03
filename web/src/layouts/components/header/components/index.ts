@@ -1,0 +1,7 @@
+export { default as YAbout } from './about.vue'
+export { default as YCurrentView } from './currentView.vue'
+export { default as YGithub } from './github.vue'
+export { default as YNotify } from './notify.vue'
+export { default as YCenter } from './center.vue'
+export { default as YRefresh } from './refresh.vue'
+export { default as YTheme } from './theme.vue'

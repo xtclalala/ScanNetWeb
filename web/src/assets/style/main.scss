@@ -1,0 +1,12 @@
+$table-padding: 24px;
+
+.y1t-table-box{
+  padding: $table-padding;
+  border-radius: 2px;
+  .n-select{
+    width: 176px;
+  }
+  .n-pagination{
+    justify-content: end;
+  }
+}
