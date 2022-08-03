@@ -8,7 +8,7 @@ import { SideBarLogo } from './components'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useViewStore } from '@/store/module/views'
-import { Menu } from '@r/types'
+import { Menu } from '@/router/types'
 import { useRouteStore } from '@/store/module/router'
 
 const router = useRouter()

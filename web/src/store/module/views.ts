@@ -4,7 +4,7 @@
  * @date 2022/7/26
  **/
 import { defineStore } from 'pinia'
-import { Menu } from '@r/types'
+import { Menu } from '@/router/types'
 import { rName } from '@/enums/rName'
 
 interface ITabsViewStore {

@@ -1,6 +1,6 @@
-import type { AppRouteRecordRaw } from '@r/types'
+import type { AppRouteRecordRaw } from '@/router/types'
 
-import { LAYOUT } from '@r/constant'
+import { LAYOUT } from '@/router/constant'
 import { rPath } from '@/enums/rPath'
 import { rName } from '@/enums/rName'
 // import { t } from '@/utils/i18n/useI18n'

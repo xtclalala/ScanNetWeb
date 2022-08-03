@@ -23,7 +23,7 @@ import {
 import { DEFAULT_CACHE_TIME } from '@/settings/encryptionSetting'
 import { toRaw } from 'vue'
 import { pick, omit } from 'lodash-es'
-import { Menu } from '@r/types'
+import { Menu } from '@/router/types'
 
 interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined

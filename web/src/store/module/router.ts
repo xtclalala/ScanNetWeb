@@ -5,10 +5,10 @@
  **/
 import { defineStore } from 'pinia'
 import { store } from '@/store'
-import { AfterBusinessRoutes } from '@r/index'
+import { AfterBusinessRoutes } from '@/router/index'
 import { PermissionModeEnum } from '@/enums/appEnum'
 import { buildMenusTree, renderMenuIcon, router2menuDeep } from '@/utils/yMenu'
-import { AppRouteRecordRaw, Menu } from '@r/types'
+import { AppRouteRecordRaw, Menu } from '@/router/types'
 import projectSetting from '@/settings/projectSetting'
 import { getAuthCache, setAuthCache } from '@/utils/auth'
 import { CACHELIST_CACHE_KEY, MENU_CACHE_KEY } from '@/enums/cacheEnum'

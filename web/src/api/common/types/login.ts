@@ -1,4 +1,4 @@
-import { Menu } from '@r/types'
+import { Menu } from '@/router/types'
 
 /**
  * 登录接口参数

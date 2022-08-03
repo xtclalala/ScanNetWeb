@@ -1,21 +1,44 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <img alt="Vue logo" src="/src/assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <n-config-provider :theme="theme" :locale="zhCN">
+    <!--    <n-theme-editor>-->
+    <n-global-style />
+    <n-loading-bar-provider>
+      <n-message-provider>
+        <n-dialog-provider>
+          <n-notification-provider>
+            <naive-provider-content />
+            <RouterView />
+          </n-notification-provider>
+        </n-dialog-provider>
+      </n-message-provider>
+    </n-loading-bar-provider>
+    <!--    </n-theme-editor>-->
+  </n-config-provider>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<script lang="ts" setup>
+import { computed, defineComponent, h } from 'vue'
+import { darkTheme, zhCN, lightTheme } from 'naive-ui'
+import { useLoadingBar, useDialog, useMessage, useNotification } from 'naive-ui'
+import { useAppStore } from '@/store/module/app'
+import { ThemeEnum } from '@/enums/appEnum'
+
+function registerNaiveTools() {
+  window.$loadingBar = useLoadingBar()
+  window.$dialog = useDialog()
+  window.$message = useMessage()
+  window.$notification = useNotification()
 }
-</style>
+
+const NaiveProviderContent = defineComponent({
+  setup() {
+    registerNaiveTools()
+  },
+  render() {
+    return h('div')
+  },
+})
+
+const app = useAppStore()
+const theme = computed(() => (app.getDarkMode === ThemeEnum.LIGHT ? lightTheme : darkTheme))
+</script>

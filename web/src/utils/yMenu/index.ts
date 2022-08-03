@@ -3,7 +3,7 @@
  * @author: y1t
  * @date 2022/7/26
  **/
-import { AppRouteRecordRaw, Menu } from '@r/types'
+import { AppRouteRecordRaw, Menu } from '@/router/types'
 import { renderIcon } from '@/utils/render'
 import { list2Tree } from '@/utils/helper/treeHelper'
 import { listSort } from '@/utils/helper/listHelper'

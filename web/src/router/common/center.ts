@@ -1,4 +1,4 @@
-import { AppRouteRecordRaw } from '@r/types'
+import { AppRouteRecordRaw } from '@/router/types'
 import { rPath } from '@/enums/rPath'
 import { rName } from '@/enums/rName'
 

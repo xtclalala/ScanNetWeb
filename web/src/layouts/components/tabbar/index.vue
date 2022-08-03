@@ -10,7 +10,7 @@ import { useMessage } from 'naive-ui'
 import { nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { YIcon } from '@/components'
-import { AppRouteRecordRaw } from '@r/types'
+import { AppRouteRecordRaw } from '@/router/types'
 import { router2menu } from '@/utils/yMenu'
 
 const viewStore = useViewStore()

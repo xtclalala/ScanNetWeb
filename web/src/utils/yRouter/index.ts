@@ -1,5 +1,5 @@
-import { AppRouteRecordRaw, Menu } from '@r/types'
-import { PAGE } from '@r/constant'
+import { AppRouteRecordRaw, Menu } from '@/router/types'
+import { PAGE } from '@/router/constant'
 
 /**
  * 引入 pages 下的 sfc
