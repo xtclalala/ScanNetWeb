@@ -6,12 +6,14 @@ import (
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/initServe"
 	"github.com/zserge/lorca"
+	"gorm.io/gorm"
 	"io/fs"
 	"net/http"
 	"os"
 	"os/exec"
 	"os/signal"
 	"strings"
+	"time"
 )
 
 //go:embed web/dist/*
@@ -19,6 +21,18 @@ var FS embed.FS
 
 func main() {
 	// do init server
+	global.Viper = initServe.InitConfig()
+	global.Db = initServe.InitDb()
+	if global.Db != nil {
+		initServe.InitTables(global.Db)
+
+		defer func(db *gorm.DB) {
+			sqlDb, err := db.DB()
+			if err != nil {
+				sqlDb.Close()
+			}
+		}(global.Db)
+	}
 
 	go openWebServer()
 
@@ -73,7 +87,6 @@ func openView(chView chan struct{}, chCMD chan struct{}) {
 	}
 	cmd := exec.Command(chromePath, defaultChromeArgs...)
 	cmd.Start()
-
 	go func() {
 		<-chCMD
 		cmd.Process.Kill()
@@ -109,5 +122,13 @@ func openWebServer() {
 			c.Status(http.StatusNotFound)
 		}
 	})
-	router.Run(global.System.App.Port)
+
+	server := &http.Server{
+		Addr:           global.System.App.Port,
+		Handler:        router,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	_ = server.ListenAndServe().Error()
 }

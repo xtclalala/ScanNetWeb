@@ -1,20 +1,20 @@
 app:
   port: ':33333'
-  auth: 'y1t-gov'
+  auth: 'qa'
 db:
   type: 'mysql'
   host: '127.0.0.1'
   port: '3306'
-  user: 'user'
-  passwd: '123456'
-  dbName: ''
+  user: 'root'
+  passwd: 'root'
+  dbName: 'scan'
 logger:
-  fileName: ''
+  fileName: 'qa'
   filePath: 'log'
 jwt:
   signKey: 'qa'
   timeout: '10'
-  iss: 'y1t'
+  iss: 'qa'
   bufferTime: '5'
 file:
   path: 'upload'

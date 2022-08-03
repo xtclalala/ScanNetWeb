@@ -10,7 +10,7 @@ func InitApi(router *gin.Engine) {
 		//publicGroup.POST("login", )
 	}
 	// 私有路由
-	router.Group("")
+	//router.Group("")
 	//router.Use(xxxxx)
 	//privateGroup := router.Group("")
 	//sysRouter := Router.AppRouter.System

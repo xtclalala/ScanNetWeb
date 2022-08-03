@@ -6,6 +6,6 @@ const (
 	Point      = "."
 	Rung       = "-"
 	ConfigType = "yaml"
-	ConfigName = Point + Point + Slash + "conf" + Slash + "config"
+	ConfigName = Point + Slash + "conf" + Slash + "config"
 	ConfigPath = ConfigName + Point + ConfigType
 )
