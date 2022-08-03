@@ -1,0 +1,18 @@
+file:
+  inFileName: in.xlsx
+  outFileName: out.xlsx
+  sheet: Sheet1
+  ip: 0
+  port: 1
+  user: 2
+  password: 3
+burst:
+  burstNum: 1
+connect:
+  timeout: 5
+os:
+  base:
+    - cd / & ls
+    - ls
+  centos:
+    - cd / & ls
