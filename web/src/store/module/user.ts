@@ -4,8 +4,7 @@
  * @date 2022/7/26
  **/
 import { defineStore } from 'pinia'
-import { Information, IOrg, IRole, LoginParams } from '@/api/common/types/login'
-import { doLogin, getInformation } from '@/api/common/login'
+import { IOrg, IRole, LoginParams } from '@/api/common/types/login'
 import { getAuthCache, setAuthCache } from '@/utils/auth'
 import {
   CURRENT_ROLE,
@@ -32,7 +31,7 @@ export const useUserStore = defineStore('user', {
     return {
       id: '',
       username: '',
-      token: '',
+      token: 'token',
       // ...各种字段，
       currentRole: undefined,
       roles: undefined,
@@ -65,16 +64,22 @@ export const useUserStore = defineStore('user', {
      * @param params
      */
     login: async function (params: LoginParams): Promise<boolean> {
-      const token = await doLogin<string>(params)
-      if (token === undefined) {
-        return false
-      }
-      this.setToken(token)
-      const { username, roles, orgs, id } = await getInformation<Information>({ isMessage: false })
-      this.setUserId(id)
-      this.setUsername(username)
-      this.setOrganizations(orgs)
-      this.setRoles(roles)
+      // const token = await doLogin<string>(params)
+      // if (token === undefined) {
+      //   return false
+      // }
+      // this.setToken(token)
+      console.log(params)
+      this.setToken('token')
+      // const { username, roles, orgs, id } = await getInformation<Information>({ isMessage: false })
+      // this.setUserId(id)
+      // this.setUsername(username)
+      // this.setOrganizations(orgs)
+      // this.setRoles(roles)
+      this.setUserId('11')
+      this.setUsername('操作员')
+      this.setOrganizations([])
+      this.setRoles([])
       return true
     },
     setToken(token: string) {

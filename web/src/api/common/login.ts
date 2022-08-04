@@ -5,6 +5,7 @@ import { RequestOptions, Result } from '#axios'
 enum Api {
   Login = '/login',
   Informational = '/user/routerAndRole',
+  demo = '/demo/demo',
 }
 
 /**
@@ -21,3 +22,6 @@ export const doLogin = <T = Result>(params: LoginParams, options?: RequestOption
  */
 export const getInformation = <T = Result>(options?: RequestOptions) =>
   defHttp.get<T>({ url: Api.Informational }, options)
+
+export const demo111 = <T = Result>(options?: RequestOptions) =>
+  defHttp.get<T>({ url: Api.demo }, options)

@@ -10,7 +10,7 @@ import { rPath } from '@/enums/rPath'
 <template>
   <n-tooltip>
     <template #trigger>
-      <router-link :to="rPath">
+      <router-link :to="rPath.ABOUT">
         <y-icon :size="22" icon-type="HelpCircleOutline" :depth="2" />
       </router-link>
     </template>

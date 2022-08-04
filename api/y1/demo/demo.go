@@ -11,4 +11,5 @@ func DoAnyThing(c *gin.Context) {
 	fmt.Println("do any thing with ctl")
 	demo.DoAnything()
 	net.Ok(c)
+	return
 }

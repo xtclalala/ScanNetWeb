@@ -5,6 +5,7 @@ import (
 )
 
 func DoAnything() {
+
 	fmt.Println("do anything with db")
 	return
 }

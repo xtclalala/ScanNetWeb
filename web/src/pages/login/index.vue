@@ -7,6 +7,7 @@ import { LoginParams } from '@/api/common/types/login'
 import { PageEnum } from '@/enums/pageEnum'
 import { useRouteStore } from '@/store/module/router'
 import { usePagesAsyncComponent } from '@/hooks/comHooks/useAsyncComponent'
+import { demo111 } from '@/api/common/login'
 
 const ChooseActiveRole = usePagesAsyncComponent('/login', 'ChooseActiveRole')
 
@@ -34,7 +35,8 @@ const router = useRouter()
 const routeStore = useRouteStore()
 const userStore = useUserStore()
 const message = useMessage()
-
+const res = await demo111()
+console.log(res.message)
 const chooseRoleRef = ref<InstanceType<typeof ChooseActiveRole> | null>(null)
 
 const handleLogin = async (e: Event): Promise<void> => {

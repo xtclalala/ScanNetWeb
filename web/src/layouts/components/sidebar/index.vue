@@ -8,18 +8,17 @@ import { SideBarLogo } from './components'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useViewStore } from '@/store/module/views'
-import { Menu } from '@/router/types'
 import { useRouteStore } from '@/store/module/router'
+import { MenuOption } from 'naive-ui'
 
 const router = useRouter()
 const routeStore = useRouteStore()
 const collapsed = ref<boolean>(false)
 const viewStore = useViewStore()
-const options = routeStore.getMenus
 const expandedKeys = ref<string[]>([])
-
+const options = routeStore.getMenus as unknown as Array<MenuOption>
 // 菜单跳转
-const handleAlt = (key: string, item: Menu) => {
+const handleAlt = (key: string, item) => {
   viewStore.routerPush(item)
   router.push({ name: key })
 }
