@@ -30,7 +30,7 @@ func LogToFile() gin.HandlerFunc {
 	logger.SetLevel(logrus.DebugLevel)
 
 	logWriter, _ := rotate.New(
-		file+"%Y-%m-%d.log",
+		file+"-%Y-%m-%d.log",
 		rotate.WithMaxAge(180*24*time.Hour),
 		rotate.WithRotationTime(24*time.Hour),
 	)

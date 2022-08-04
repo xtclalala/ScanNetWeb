@@ -35,8 +35,7 @@ const router = useRouter()
 const routeStore = useRouteStore()
 const userStore = useUserStore()
 const message = useMessage()
-const res = await demo111()
-console.log(res.message)
+demo111()
 const chooseRoleRef = ref<InstanceType<typeof ChooseActiveRole> | null>(null)
 
 const handleLogin = async (e: Event): Promise<void> => {
