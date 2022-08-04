@@ -6,9 +6,9 @@ import (
 	rotate "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
+	"github.com/xtclalala/ScanNetWeb/global"
 	"os"
 	"path"
-	"permissions/global"
 	"time"
 )
 
@@ -17,7 +17,7 @@ func LogToFile() gin.HandlerFunc {
 	FilePath := logConfig.FilePath
 	FileName := logConfig.FileName
 
-	file := path.Join(FilePath, FileName)
+	file := path.Join(FilePath, FileName+".log")
 	fmt.Println("日志文件路径:", file)
 	scr, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE, 0755)
 	if err != nil {

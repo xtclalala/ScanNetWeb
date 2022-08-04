@@ -1,13 +1,17 @@
 package initServe
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/xtclalala/ScanNetWeb/router/demo"
+)
 
 func InitApi(router *gin.Engine) {
 	// 公共路由
-	//publicGroup := router.Group("")
+	publicGroup := router.Group("")
 	//var userApi = v1.ApiGroupApp.SysApiGroup.UserApi
 	{
 		//publicGroup.POST("login", )
+		demo.InitDemoRouter(publicGroup)
 	}
 	// 私有路由
 	//router.Group("")
