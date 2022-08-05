@@ -1,5 +1,10 @@
 package proError
 
+import (
+	"github.com/pkg/errors"
+	"github.com/xtclalala/ScanNetWeb/tools"
+)
+
 var (
 	SUCCESS = 200
 	ERROR   = 500
@@ -91,4 +96,15 @@ var codeMsg = map[int]string{
 
 func GetErrorMessage(code int) string {
 	return codeMsg[code]
+}
+
+func Wrap(err error, s string, args ...any) error {
+	return errors.Wrapf(err, tools.Out(s), args)
+}
+
+func WrapOrNil(err error, s string, args ...any) error {
+	if err != nil {
+		return errors.Wrapf(err, tools.Out(s), args)
+	}
+	return nil
 }
