@@ -3,6 +3,7 @@ package initServe
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/xtclalala/ScanNetWeb/middleware"
+	"github.com/xtclalala/ScanNetWeb/router/SSH"
 	"github.com/xtclalala/ScanNetWeb/router/demo"
 )
 
@@ -14,11 +15,13 @@ func InitApi(router *gin.Engine) {
 	{
 		//publicGroup.POST("login", )
 		demo.InitDemoRouter(publicGroup)
+
 	}
 	// 私有路由
-	//router.Group("")
+	router.Group("")
 	//router.Use(xxxxx)
-	//privateGroup := router.Group("")
+	privateGroup := router.Group("")
+	SSH.InitSSHRouter(privateGroup) // linux ssh
 	//sysRouter := Router.AppRouter.System
 	//sysRouter.InitUserRouter(privateGroup)     // 用户路由
 	//sysRouter.InitPerRouter(privateGroup)      // 按钮路由

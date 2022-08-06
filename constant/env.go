@@ -13,9 +13,9 @@ const (
 type TaskState = int64
 
 const (
-	State  TaskState = 0
-	Build            = State + 1
-	Ready            = Build + 1
-	Doing            = Ready + 1
-	Finish           = Doing + 1
+	_ TaskState = iota
+	Build
+	Ready
+	Doing
+	Finish
 )

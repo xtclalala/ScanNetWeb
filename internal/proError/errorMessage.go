@@ -10,7 +10,7 @@ var (
 	ERROR   = 500
 
 	// Controller Error
-	ParamsResolveFault = 1001
+	ParamResolveFault = 1001
 
 	// User Error
 	UsernameAndPasswdError = 2001
@@ -19,22 +19,23 @@ var (
 	FindPermissionError    = 2104
 	FindMenuError          = 2105
 	FindUserError          = 2106
+	SearchTaskError        = 2107
 
-	UpdateRoleError       = 2201
-	UpdateRoleMenusError  = 2202
-	UpdateRolePerError    = 2203
-	UpdatePermissionError = 2204
-	UpdateOrgBaseError    = 2205
-	UpdateMenuBaseError   = 2206
+	UpdateRoleError      = 2201
+	UpdateRoleMenusError = 2202
+	UpdateRolePerError   = 2203
+	UpdateTaskError      = 2204
+	UpdateOrgBaseError   = 2205
+	UpdateMenuBaseError  = 2206
 
 	CreateRoleError         = 2301
-	CreatePermissionError   = 2302
+	CreateTaskError         = 2302
 	CreateOrganizationError = 2303
 	CreateMenuError         = 2304
 
 	DeleteUserError         = 2401
 	DeleteRoleError         = 2402
-	DeletePermissionError   = 2403
+	DeleteTaskError         = 2403
 	DeleteOrganizationError = 2404
 	DeleteMenuError         = 2405
 
@@ -55,7 +56,7 @@ var codeMsg = map[int]string{
 	SUCCESS: "操作成功",
 	ERROR:   "操作失败",
 
-	ParamsResolveFault: "sys.",
+	ParamResolveFault: "解析参数失败",
 
 	UsernameAndPasswdError: "sys.user.usernameAndPasswdError",
 	FindOrgError:           "sys.user.findOrgError",
@@ -63,22 +64,23 @@ var codeMsg = map[int]string{
 	FindPermissionError:    "sys.user.findPermissionError",
 	FindMenuError:          "sys.user.findMenuError",
 	FindUserError:          "sys.user.findUserError",
+	SearchTaskError:        "搜索任务失败",
 
-	UpdateRoleError:       "sys.user.updateRoleError",
-	UpdateRoleMenusError:  "sys.user.updateRoleMenusError",
-	UpdateRolePerError:    "sys.user.updateRolePerError",
-	UpdatePermissionError: "sys.user.updatePermissionError",
-	UpdateOrgBaseError:    "sys.user.updateOrgBaseError",
-	UpdateMenuBaseError:   "sys.user.updateMenuBaseError",
+	UpdateRoleError:      "sys.user.updateRoleError",
+	UpdateRoleMenusError: "sys.user.updateRoleMenusError",
+	UpdateRolePerError:   "sys.user.updateRolePerError",
+	UpdateTaskError:      "修改任务失败",
+	UpdateOrgBaseError:   "sys.user.updateOrgBaseError",
+	UpdateMenuBaseError:  "sys.user.updateMenuBaseError",
 
 	CreateRoleError:         "sys.user.createRoleError",
-	CreatePermissionError:   "sys.user.createPermissionError",
+	CreateTaskError:         "创建任务失败",
 	CreateOrganizationError: "sys.user.createOrganizationError",
 	CreateMenuError:         "sys.user.createMenuError",
 
 	DeleteUserError:         "sys.user.deleteUserError",
 	DeleteRoleError:         "sys.user.deleteRoleError",
-	DeletePermissionError:   "sys.user.deletePermissionError",
+	DeleteTaskError:         "删除任务失败",
 	DeleteOrganizationError: "sys.user.deleteOrganizationError",
 	DeleteMenuError:         "sys.user.deleteMenuError",
 

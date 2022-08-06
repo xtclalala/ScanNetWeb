@@ -30,8 +30,23 @@ func (bUuid *BaseUUID) BeforeUpdate(tx *gorm.DB) (err error) {
 
 // BaseID 自增id模板
 type BaseID struct {
-	Id      int `json:"id" gorm:"primary_key"`
-	Deleted gorm.DeletedAt
+	Id         int `json:"id" gorm:"primary_key"`
+	CreateTime time.Time
+	UpdateTime time.Time
+	Deleted    gorm.DeletedAt
+}
+
+// BeforeCreate 创建时添加uuid
+func (bUuid *BaseID) BeforeCreate(tx *gorm.DB) (err error) {
+	bUuid.CreateTime = time.Now()
+	bUuid.UpdateTime = time.Now()
+	return
+}
+
+// BeforeUpdate 更新时添加更新时间
+func (bUuid *BaseID) BeforeUpdate(tx *gorm.DB) (err error) {
+	bUuid.UpdateTime = time.Now()
+	return
 }
 
 type BasePage struct {

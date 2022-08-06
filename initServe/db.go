@@ -3,6 +3,7 @@ package initServe
 import (
 	"fmt"
 	"github.com/xtclalala/ScanNetWeb/global"
+	"github.com/xtclalala/ScanNetWeb/model/SSH"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -54,10 +55,10 @@ func InitDb() *gorm.DB {
 
 func InitTables(db *gorm.DB) {
 	// 加 model
-	//err := db.AutoMigrate(&system2.SysUser{}, &system2.SysRole{}, &system2.SysMenu{}, &system2.SysPermission{})
-	//if err != nil {
-	//	panic(fmt.Errorf("table of database create failed:", err))
-	//}
+	err := db.AutoMigrate(&SSH.BizSSH{})
+	if err != nil {
+		panic(fmt.Errorf("table of database create failed:", err))
+	}
 	// 设置其他引擎
 	//db.Set("gorm:table_options","ENGINE=MyIsAm").AutoMigrate()
 	fmt.Println("table of database create successfully")

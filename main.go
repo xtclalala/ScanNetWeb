@@ -1,23 +1,21 @@
 package main
 
 import (
-	"embed"
+	//"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/initServe"
 	"github.com/zserge/lorca"
 	"gorm.io/gorm"
-	"io/fs"
 	"net/http"
 	"os"
 	"os/exec"
 	"os/signal"
-	"strings"
 	"time"
 )
 
-//go:embed web/dist/*
-var FS embed.FS
+// go:embed web/dist/*
+//var FS embed.FS
 
 func main() {
 	// do init server
@@ -40,7 +38,7 @@ func main() {
 	chCMD := make(chan struct{})
 	chSignal := make(chan os.Signal, 1)
 	signal.Notify(chSignal, os.Interrupt)
-	go openView(chView, chCMD)
+	//go openView(chView, chCMD)
 
 	for {
 		select {
@@ -98,30 +96,30 @@ func openView(chView chan struct{}, chCMD chan struct{}) {
 }
 
 func openWebServer() {
-	staticFile, _ := fs.Sub(FS, "web/dist")
+	//staticFile, _ := fs.Sub(FS, "web/dist")
 	gin.SetMode(gin.DebugMode)
 	router := gin.New()
 	initServe.InitApi(router)
-	router.StaticFS("/static", http.FS(staticFile))
-	router.NoRoute(func(c *gin.Context) {
-		path := c.Request.URL.Path
-		if strings.HasPrefix(path, "/static/") {
-			reader, err := staticFile.Open("index.html")
-			if err != nil {
-				c.Status(http.StatusNotFound)
-				return
-			}
-			defer reader.Close()
-			stat, err := reader.Stat()
-			if err != nil {
-				c.Status(http.StatusNotFound)
-				return
-			}
-			c.DataFromReader(http.StatusOK, stat.Size(), "text/html;charset=utf-8", reader, nil)
-		} else {
-			c.Status(http.StatusNotFound)
-		}
-	})
+	//router.StaticFS("/static", http.FS(staticFile))
+	//router.NoRoute(func(c *gin.Context) {
+	//	path := c.Request.URL.Path
+	//	if strings.HasPrefix(path, "/static/") {
+	//		reader, err := staticFile.Open("index.html")
+	//		if err != nil {
+	//			c.Status(http.StatusNotFound)
+	//			return
+	//		}
+	//		defer reader.Close()
+	//		stat, err := reader.Stat()
+	//		if err != nil {
+	//			c.Status(http.StatusNotFound)
+	//			return
+	//		}
+	//		c.DataFromReader(http.StatusOK, stat.Size(), "text/html;charset=utf-8", reader, nil)
+	//	} else {
+	//		c.Status(http.StatusNotFound)
+	//	}
+	//})
 
 	server := &http.Server{
 		Addr:           global.System.App.Port,

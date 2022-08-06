@@ -11,27 +11,20 @@ import (
 func Search(dto *SSH.SearchSSH) (list []SSH.BizSSH, total int64, err error) {
 	limit := dto.PageSize
 	offset := dto.GetOffset()
-	db := global.Db.Model(&SSH.BizSSH{})
+	db := global.Db.Model(&SSH.BizSSH{}).Where(&SSH.BizSSH{
+		State: dto.State,
+	})
 
-	if dto.State != constant.State {
-		db = db.Where("state = ?", dto.State)
-	}
 	if dto.Name != "" {
-		db = db.Where("name like ?", "%"+dto.Name+"%")
+		db.Where("name like ?", "%"+dto.Name+"%")
 	}
-
-	err = db.Count(&total).Error
-	if err != nil {
-		return
-	}
-	db = db.Limit(limit).Offset(offset)
 
 	oc := clause.OrderByColumn{
-		Column: clause.Column{Name: "sort", Raw: true},
+		Column: clause.Column{Name: "create_time", Raw: true},
 		Desc:   dto.Desc,
 	}
-
-	err = db.Order(oc).Find(&list).Error
+	err = db.Count(&total).Limit(limit).Offset(offset).Order(oc).Find(&list).Error
+	err = proError.WrapOrNil(err, "Search ssh task: %s fail!")
 	return
 }
 
@@ -40,15 +33,14 @@ func Create(dto *SSH.BizSSH) (err error) {
 	return proError.WrapOrNil(err, "Create ssh task: %s fail!", dto.Name)
 }
 
-func Update(dto *SSH.BizSSH) (err error) {
-	var old SSH.BizSSH
-	err = global.Db.First(&old, dto.Id).Error
-	if err != nil {
-		return proError.Wrap(err, "Update ssh task: %s fail!", dto.Id)
-	}
-
+func UpdateAll(dto *SSH.BizSSH) (err error) {
 	err = global.Db.Save(dto).Error
-	return
+	return proError.WrapOrNil(err, "Update ssh task: %s fail!", dto.Id)
+}
+
+func UpdateState(id int, state constant.TaskState) (err error) {
+	err = global.Db.Model(&SSH.BizSSH{}).Where("id = ?", id).Update("state", state).Error
+	return proError.WrapOrNil(err, "Update ssh task: %s fail!", id)
 }
 
 func Delete(id int) (err error) {
@@ -56,6 +48,6 @@ func Delete(id int) (err error) {
 	return proError.WrapOrNil(err, "Delete ssh task: %s fail!", id)
 }
 
-func Run() {
-
+func Run(id int) (err error) {
+	return
 }
