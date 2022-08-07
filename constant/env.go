@@ -19,3 +19,9 @@ const (
 	Doing
 	Finish
 )
+
+type TaskType = int64
+
+const (
+	SSH TaskType = iota
+)

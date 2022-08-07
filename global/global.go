@@ -7,8 +7,7 @@ import (
 )
 
 var (
-	Viper           *viper.Viper
-	System          conf.Config
-	Db              *gorm.DB
-	LinuxScanConfig *conf.LinuxScan
+	Viper  *viper.Viper
+	System conf.Config
+	Db     *gorm.DB
 )

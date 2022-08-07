@@ -17,4 +17,4 @@ jwt:
   iss: 'qa'
   bufferTime: '5'
 file:
-  path: 'upload'
+  path: 'docs/upload'

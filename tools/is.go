@@ -1,9 +1,12 @@
 package tools
 
-import "reflect"
+import (
+	"github.com/google/uuid"
+	"reflect"
+)
 
 type EmptyType interface {
-	[]any | chan any | map[any]any | string | int
+	[]any | chan any | map[any]any | string | int | uuid.UUID
 }
 
 func IsEmpty[T EmptyType](value T) bool {

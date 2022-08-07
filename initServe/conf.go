@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/xtclalala/ScanNetWeb/constant"
 	"github.com/xtclalala/ScanNetWeb/global"
-	"log"
 )
 
 func InitConfig() *viper.Viper {
@@ -33,20 +32,4 @@ func InitConfig() *viper.Viper {
 	})
 
 	return v
-}
-
-func InitLinuxScanConfig() {
-	viper.SetConfigType("yaml")
-	viper.SetConfigFile("./conf/config-linuxScan.yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
-	err = viper.Unmarshal(global.LinuxScanConfig)
-	global.LinuxScanConfig.OsConfig = viper.GetStringMapStringSlice("os")
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
 }

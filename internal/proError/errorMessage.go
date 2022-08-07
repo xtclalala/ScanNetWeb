@@ -12,9 +12,9 @@ var (
 	// Controller Error
 	ParamResolveFault = 1001
 
-	// User Error
+	// task crud Error
 	UsernameAndPasswdError = 2001
-	FindOrgError           = 2102
+	FindTaskError          = 2102
 	FindRoleError          = 2103
 	FindPermissionError    = 2104
 	FindMenuError          = 2105
@@ -26,12 +26,11 @@ var (
 	UpdateRolePerError   = 2203
 	UpdateTaskError      = 2204
 	UpdateOrgBaseError   = 2205
-	UpdateMenuBaseError  = 2206
+	FindFileError        = 2206
 
 	CreateRoleError         = 2301
 	CreateTaskError         = 2302
 	CreateOrganizationError = 2303
-	CreateMenuError         = 2304
 
 	DeleteUserError         = 2401
 	DeleteRoleError         = 2402
@@ -39,6 +38,9 @@ var (
 	DeleteOrganizationError = 2404
 	DeleteMenuError         = 2405
 
+	RunTaskError = 2501
+
+	UploadFileError = 2604
 	// Token Error
 	TokenExpired      = 3001
 	TokenNotValid     = 3002
@@ -50,6 +52,9 @@ var (
 
 	FileReadType = 4001
 	FileSave     = 4002
+
+	// task Error
+	TaskCantRevise = 4003
 )
 
 var codeMsg = map[int]string{
@@ -59,7 +64,7 @@ var codeMsg = map[int]string{
 	ParamResolveFault: "解析参数失败",
 
 	UsernameAndPasswdError: "sys.user.usernameAndPasswdError",
-	FindOrgError:           "sys.user.findOrgError",
+	FindTaskError:          "sys.user.findOrgError",
 	FindRoleError:          "sys.user.findRoleError",
 	FindPermissionError:    "sys.user.findPermissionError",
 	FindMenuError:          "sys.user.findMenuError",
@@ -71,18 +76,21 @@ var codeMsg = map[int]string{
 	UpdateRolePerError:   "sys.user.updateRolePerError",
 	UpdateTaskError:      "修改任务失败",
 	UpdateOrgBaseError:   "sys.user.updateOrgBaseError",
-	UpdateMenuBaseError:  "sys.user.updateMenuBaseError",
+	FindFileError:        "sys.user.updateMenuBaseError",
 
 	CreateRoleError:         "sys.user.createRoleError",
 	CreateTaskError:         "创建任务失败",
 	CreateOrganizationError: "sys.user.createOrganizationError",
-	CreateMenuError:         "sys.user.createMenuError",
 
 	DeleteUserError:         "sys.user.deleteUserError",
 	DeleteRoleError:         "sys.user.deleteRoleError",
 	DeleteTaskError:         "删除任务失败",
 	DeleteOrganizationError: "sys.user.deleteOrganizationError",
 	DeleteMenuError:         "sys.user.deleteMenuError",
+
+	RunTaskError: "启动任务失败",
+
+	UploadFileError: "上传文件失败",
 
 	NOTOKEN:           "sys.token.noToken",
 	TokenExpired:      "sys.token.expired",
@@ -94,6 +102,8 @@ var codeMsg = map[int]string{
 
 	FileReadType: "sys.file.read",
 	FileSave:     "sys.file.save",
+
+	TaskCantRevise: "任务已经不能改变",
 }
 
 func GetErrorMessage(code int) string {
