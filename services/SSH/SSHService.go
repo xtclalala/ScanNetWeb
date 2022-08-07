@@ -1,7 +1,7 @@
 package SSH
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/xtclalala/ScanNetWeb/conf"
 	"github.com/xtclalala/ScanNetWeb/constant"
 	"github.com/xtclalala/ScanNetWeb/global"
@@ -29,7 +29,7 @@ func Search(dto *SSH.SearchSSH) (list []SSH.BizSSH, total int64, err error) {
 		Desc:   dto.Desc,
 	}
 	err = db.Count(&total).Limit(limit).Offset(offset).Order(oc).Find(&list).Error
-	err = proError.WrapOrNil(err, "Search ssh task: %s fail!")
+	err = proError.WrapOrNil(err, "Search ssh task fail!")
 	return
 }
 
@@ -119,11 +119,26 @@ func Run(task *SSH.BizSSH) (err error) {
 	}
 	go func() {
 		tools.Start(fns, task.Thread)
+		var dataList []*SSH.BizSSHResult
 		data.Range(func(key, value any) bool {
-			fmt.Printf("key: %s, value: %s\n", key, value)
+			values := value.([]string)
+			bytes, _ := json.Marshal(values)
+
+			temp := &SSH.BizSSHResult{
+				TaskId:   task.Id,
+				Addr:     values[0],
+				User:     values[1],
+				Password: values[2],
+				Os:       values[3],
+				Result:   string(bytes),
+			}
+			dataList = append(dataList, temp)
 			return true
 		})
-		// todo save data
+		// save data
+		CreateResult(dataList)
+		// todo ws notify success or fail
+
 		UpdateState(task.Id, constant.Finish)
 		// todo ws notify success or fail
 

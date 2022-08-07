@@ -19,6 +19,8 @@ type BizSSH struct {
 	User     *int               ` gorm:"comment:user在文件的列数"`
 	Password *int               ` gorm:"comment:password在文件的列数"`
 	Timeout  int                ` gorm:"default:5;comment:ssh连接超时事件"`
+
+	BizSSHResult []BizSSHResult `gorm:"foreignKey:TaskId"`
 }
 
 type SearchSSH struct {
@@ -60,4 +62,20 @@ type DeleteSSH struct {
 
 type RunSSH struct {
 	Id int `json:"id" validate:"required" label:"任务Id"`
+}
+
+type BizSSHResult struct {
+	model.BaseUUID
+	TaskId   int    `gorm:"not null;comment:任务Id;"`
+	Addr     string `gorm:"comment:目标地址;"`
+	User     string `gorm:"comment:账号;"`
+	Password string `gorm:"comment:密码;"`
+	Os       string `gorm:"comment:操作系统;"`
+	Result   string `gorm:"comment:结果;"`
+}
+
+type SearchSSHResult struct {
+	model.BasePage
+	TaskId int    `json:"taskId" validator:"required" label:"任务"`
+	Os     string `json:"os"`
 }

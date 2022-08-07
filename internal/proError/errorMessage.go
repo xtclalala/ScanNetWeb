@@ -18,7 +18,7 @@ var (
 	FindRoleError          = 2103
 	FindPermissionError    = 2104
 	FindMenuError          = 2105
-	FindUserError          = 2106
+	SearchTaskResultError  = 2106
 	SearchTaskError        = 2107
 
 	UpdateRoleError      = 2201
@@ -68,7 +68,7 @@ var codeMsg = map[int]string{
 	FindRoleError:          "sys.user.findRoleError",
 	FindPermissionError:    "sys.user.findPermissionError",
 	FindMenuError:          "sys.user.findMenuError",
-	FindUserError:          "sys.user.findUserError",
+	SearchTaskResultError:  "sys.user.findUserError",
 	SearchTaskError:        "搜索任务失败",
 
 	UpdateRoleError:      "sys.user.updateRoleError",
