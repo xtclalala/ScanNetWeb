@@ -122,7 +122,7 @@ func Run(task *SSH.BizSSH) (err error) {
 		var dataList []*SSH.BizSSHResult
 		data.Range(func(key, value any) bool {
 			values := value.([]string)
-			bytes, _ := json.Marshal(values)
+			bytes, _ := json.Marshal(values[4:])
 
 			temp := &SSH.BizSSHResult{
 				TaskId:   task.Id,
