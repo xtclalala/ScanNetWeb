@@ -8,7 +8,7 @@ export enum rName {
   REDIRECT = 'Redirect',
   REDIRECT_ROUTE = 'RedirectTo',
 
-  SYSTEM = 'SystemSetting',
+  BIZ_LINUX_SCAN = 'LinuxScan',
   SYSTEM_MENU = 'Menu',
   SYSTEM_ROLE = 'Role',
   SYSTEM_USER = 'User',

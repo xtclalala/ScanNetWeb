@@ -6,13 +6,13 @@ import (
 )
 
 func InitSSHRouter(router *gin.RouterGroup) {
-	demoRouter := router.Group("ssh") //.Use(middleware.LogToFile())
+	sshRouter := router.Group("ssh") //.Use(middleware.LogToFile())
 	{
-		demoRouter.GET("ssh", y1.Search)
-		demoRouter.POST("ssh", y1.Create)
-		demoRouter.PUT("ssh", y1.Update)
-		demoRouter.DELETE("ssh", y1.Delete)
-		demoRouter.POST("run", y1.Run)
-		demoRouter.GET("run", y1.GetResult)
+		sshRouter.GET("ssh", y1.Search)
+		sshRouter.POST("ssh", y1.Create)
+		sshRouter.PUT("ssh", y1.Update)
+		sshRouter.DELETE("ssh", y1.Delete)
+		sshRouter.POST("run", y1.Run)
+		sshRouter.GET("run", y1.GetResult)
 	}
 }

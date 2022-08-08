@@ -3,12 +3,12 @@ import { rPath } from '@/enums/rPath'
 import { rName } from '@/enums/rName'
 
 const routes: AppRouteRecordRaw = {
-  path: rPath.ABOUT,
-  name: rName.ABOUT,
-  component: () => import('@/pages/about/index.vue'),
+  path: rPath.BIZ_LINUX_SCAN,
+  name: rName.BIZ_LINUX_SCAN,
+  component: () => import('@/pages/biz/linuxScan/index.vue'),
   meta: {
     // title: t('routes.dashboard.about'),
-    title: '关于',
+    title: '扫描',
     icon: 'LogoGithub',
     hideMenu: false,
   },

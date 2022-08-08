@@ -34,3 +34,9 @@ export interface IOrg {
   sort?: number
   children?: IOrg[]
 }
+
+export type Page = {
+  pageSize: number
+  page: number
+  desc: boolean
+}

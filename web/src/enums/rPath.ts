@@ -8,7 +8,7 @@ export enum rPath {
   REDIRECT = '/redirect',
   REDIRECT_ROUTE = '/redirect/:path(.*)',
 
-  SYSTEM = '/system',
+  BIZ_LINUX_SCAN = '/linuxScan',
   SYSTEM_MENU = 'menu',
   SYSTEM_ROLE = 'role',
   SYSTEM_USER = 'user',

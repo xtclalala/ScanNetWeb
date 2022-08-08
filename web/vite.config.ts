@@ -28,6 +28,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(new RegExp('^' + config.VITE_GLOB_API_URL_PREFIX), ''),
       },
+      '/ws': {
+        target: config.VITE_GLOB_SERVICE_URL,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(new RegExp('^' + config.VITE_GLOB_API_URL_PREFIX), 'ws'),
+      },
     },
   },
   css: {

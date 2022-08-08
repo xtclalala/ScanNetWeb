@@ -20,7 +20,7 @@ const globSetting = useGlobalSetting()
 const urlPrefix = globSetting.urlPrefix
 
 // todo 集成进全局设置
-const Authorization = 'y1t-gov'
+export const Authorization = 'qa'
 /**
  * @description: 数据处理，方便区分多种处理方式
  */

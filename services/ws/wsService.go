@@ -59,7 +59,6 @@ func WsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// 把与客户端的链接添加到客户端链接池中
 	_ = addClient(conn)
-
 	// 设置客户端关闭ws链接回调函数
 	conn.SetCloseHandler(func(code int, text string) error {
 		deleteClient()
@@ -68,9 +67,8 @@ func WsHandler(w http.ResponseWriter, r *http.Request) {
 
 	go ReadMessage(conn)
 	for {
-
 		select {
-		case message, _ := <-wsMessageCh:
+		case message := <-wsMessageCh:
 			// 从消息通道接收消息，然后推送给前端
 			err = conn.WriteJSON(message)
 			if err != nil {
@@ -81,7 +79,7 @@ func WsHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		case <-pingTicker.C:
 			// 服务端心跳:每60秒ping一次客户端，查看其是否在线
-			conn.SetWriteDeadline(time.Now().Add(time.Second * 60))
+			conn.SetWriteDeadline(time.Now().Add(time.Second * 10))
 			err = conn.WriteMessage(websocket.PingMessage, []byte{})
 			if err != nil {
 				log.Println("send ping err:", err)
@@ -95,7 +93,8 @@ func WsHandler(w http.ResponseWriter, r *http.Request) {
 
 func ReadMessage(conn *websocket.Conn) {
 	for {
-		_, _, err := conn.ReadMessage()
+		_, msg, err := conn.ReadMessage()
+		print(string(msg))
 		if err != nil {
 			conn.Close()
 			deleteClient()
@@ -109,6 +108,7 @@ func ReadMessage(conn *websocket.Conn) {
 func addClient(conn *websocket.Conn) error {
 	mux.Lock()
 	if client != nil {
+		mux.Unlock()
 		return errors.New("client was exist")
 	}
 	client = conn
@@ -118,11 +118,9 @@ func addClient(conn *websocket.Conn) error {
 
 // 获取指定客户端链接
 func getClient() (conn *websocket.Conn, exist bool) {
-	mux.Lock()
 	if client == nil {
 		return nil, false
 	}
-	mux.Unlock()
 	return client, true
 }
 
@@ -131,15 +129,18 @@ func deleteClient() {
 	client = nil
 }
 
-func PushMessage(data *WsMessage) {
-	wsMessageCh <- *data
+func PushMessage(data WsMessage) {
+	if _, exist := getClient(); !exist {
+		return
+	}
+	wsMessageCh <- data
 }
 
-func NewMessage(title, context, stste string, stateCode int) *WsMessage {
-	return &WsMessage{
+func NewMessage(title, context, state string, stateCode int) WsMessage {
+	return WsMessage{
 		Title:     title,
 		Context:   context,
-		State:     stste,
+		State:     state,
 		StateCode: stateCode,
 	}
 }

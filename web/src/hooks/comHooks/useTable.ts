@@ -1,6 +1,6 @@
-import { Page } from '@/api/system_setting/types/sys_role'
 import { isNullOrUnDef } from '@/utils/is'
 import { reactive, ref } from 'vue'
+import { Page } from '@/api/common/types/login'
 
 const tableMap = {}
 const tableMapStates = {}

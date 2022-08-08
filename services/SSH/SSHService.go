@@ -8,8 +8,8 @@ import (
 	"github.com/xtclalala/ScanNetWeb/internal/proError"
 	"github.com/xtclalala/ScanNetWeb/model/SSH"
 	"github.com/xtclalala/ScanNetWeb/services/file"
+	wsServicxe "github.com/xtclalala/ScanNetWeb/services/ws"
 	"github.com/xtclalala/ScanNetWeb/tools"
-	//wsServicxe "github.com/xtclalala/ScanNetWeb/services/ws"
 	"gorm.io/gorm/clause"
 	"sync"
 )
@@ -137,16 +137,13 @@ func Run(task *SSH.BizSSH) (err error) {
 			return true
 		})
 		// save data
-		if err = CreateResult(dataList); err != nil {
-			// todo ws notify success or fail
-			//wsServicxe.PushMessage(wsServicxe.NewMessage("xxx", "xxx", "失败", 500))
-		}
-		if err = UpdateState(task.Id, constant.Finish); err != nil {
-			// todo ws notify success or fail
-			//wsServicxe.PushMessage(wsServicxe.NewMessage("扫描失败", "", "失败", 500))
+		rErr := CreateResult(dataList)
+
+		if err = UpdateState(task.Id, constant.Finish); err != nil || rErr != nil {
+			wsServicxe.PushMessage(wsServicxe.NewMessage("扫描失败", "扫描结果存储失败或更新任务状态失败", "失败", 500))
 			return
 		}
-		//wsServicxe.PushMessage(wsServicxe.NewMessage("扫描成功", "xxx", "成功", 200))
+		wsServicxe.PushMessage(wsServicxe.NewMessage("扫描成功", task.Name+"任务完成", "成功", 200))
 
 	}()
 

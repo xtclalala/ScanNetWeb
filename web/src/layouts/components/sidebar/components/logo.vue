@@ -16,7 +16,7 @@ const { projectGithub } = ProjectInfo
           fill="currentColor"
         />
       </svg>
-      <span>y1t-gov</span>
+      <span>qa-scan</span>
     </n-a>
   </router-link>
 </template>

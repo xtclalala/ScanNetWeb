@@ -6,9 +6,9 @@ import (
 )
 
 func InitFileRouter(router *gin.RouterGroup) {
-	demoRouter := router.Group("file") //.Use(middleware.LogToFile())
+	fileRouter := router.Group("file") //.Use(middleware.LogToFile())
 	{
-		demoRouter.GET("file", y1.Download)
-		demoRouter.POST("file", y1.Upload)
+		fileRouter.GET(":fileId", y1.Download)
+		fileRouter.POST("file", y1.Upload)
 	}
 }

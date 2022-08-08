@@ -6,19 +6,17 @@ import (
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/internal/net"
 	"github.com/xtclalala/ScanNetWeb/internal/proError"
-	"github.com/xtclalala/ScanNetWeb/internal/validator"
 	"github.com/xtclalala/ScanNetWeb/model"
 	"github.com/xtclalala/ScanNetWeb/model/file"
 	service "github.com/xtclalala/ScanNetWeb/services/file"
 	"github.com/xtclalala/ScanNetWeb/tools"
-
 	"path"
 )
 
 // Upload 上传文件
 func Upload(c *gin.Context) {
 	form, _ := c.MultipartForm()
-	files := form.File["files"]
+	files := form.File["file"]
 
 	var dataList []*file.BizFile
 	dataMap := map[string]string{}
@@ -59,20 +57,19 @@ func Upload(c *gin.Context) {
 
 // Download 获取文件信息
 func Download(c *gin.Context) {
-	var data file.DownloadFile
-	if err := c.ShouldBindQuery(&data); err != nil {
-		net.FailWhitStatus(proError.ParamResolveFault, c)
+	fileId := c.Param("fileId")
+	if len(fileId) <= 0 {
+		net.FailWithMessage("文件id错误", c)
 		return
 	}
-	if err := validator.Validate(&data); err != nil {
-		net.FailWithMessage(err.Error(), c)
-		return
-	}
-	file, err := service.FindById(data.Id)
+	fileData, err := service.FindById(uuid.MustParse(fileId))
 	if err != nil {
 		net.FailWhitStatus(proError.FindFileError, c)
 		return
 	}
-	c.File(tools.FileAbsPath(file.Path, file.Name))
-	net.Ok(c)
+	fileContentDisposition := "attachment;filename=\"" + fileData.Name + "\""
+	c.Header("Content-Type", "application/octet-stream")
+	c.Header("Content-Disposition", fileContentDisposition)
+	c.File(tools.FileAbsPath(fileData.Path, fileData.Id.String()))
+
 }

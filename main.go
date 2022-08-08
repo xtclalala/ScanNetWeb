@@ -1,7 +1,6 @@
 package main
 
 import (
-	//"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/initServe"
