@@ -35,7 +35,7 @@ Object.keys(common).forEach((key) => {
 export const RootRoute: AppRouteRecordRaw = {
   path: rPath.ROOT,
   name: rName.ROOT,
-  redirect: PageEnum.BASE_LOGIN,
+  redirect: PageEnum.BASE_HOME,
   meta: {
     title: '根',
     white: true,
