@@ -6,6 +6,7 @@ import (
 	"github.com/xtclalala/ScanNetWeb/router/SSH"
 	"github.com/xtclalala/ScanNetWeb/router/demo"
 	"github.com/xtclalala/ScanNetWeb/router/file"
+	"github.com/xtclalala/ScanNetWeb/router/ws"
 )
 
 func InitApi(router *gin.Engine) {
@@ -22,8 +23,9 @@ func InitApi(router *gin.Engine) {
 	router.Group("")
 	//router.Use(xxxxx)
 	privateGroup := router.Group("")
-	SSH.InitSSHRouter(privateGroup) // linux ssh
-	file.InitFileRouter(privateGroup)
+	SSH.InitSSHRouter(privateGroup)   // linux ssh
+	file.InitFileRouter(privateGroup) // file
+	ws.InitWsRouter(privateGroup)     // ws
 	//sysRouter := Router.AppRouter.System
 	//sysRouter.InitUserRouter(privateGroup)     // 用户路由
 	//sysRouter.InitPerRouter(privateGroup)      // 按钮路由
