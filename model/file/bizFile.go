@@ -10,10 +10,10 @@ import (
 
 type BizFile struct {
 	model.BaseUUID
-	Name string `gorm:"not null;comment:文件名称;"`
-	Type string `gorm:"not null;comment:文件类型;"`
+	Name string `json:"name" gorm:"not null;comment:文件名称;"`
+	Type string `json:"type" gorm:"not null;comment:文件类型;"`
 	// 程序运行的当前路径为根路径
-	Path string `gorm:"not null;comment:文件存储路径;"`
+	Path string `json:"path" gorm:"not null;comment:文件存储路径;"`
 }
 
 func (u *BizFile) BeforeCreate(tx *gorm.DB) (err error) {

@@ -1,6 +1,6 @@
 os:
   base:
-    - cd / & ls
+    - cd / ; ls
     - ls
   centos:
-    - cd / & ls
+    - cd / ; ls

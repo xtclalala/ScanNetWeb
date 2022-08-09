@@ -8,8 +8,8 @@ import (
 func InitWsRouter(router *gin.RouterGroup) {
 	wsRouter := router.Group("ws") //.Use(middleware.LogToFile())
 	{
-		wsRouter.GET("", y1.WsConnect)
-		wsRouter.DELETE("", y1.Delect)
+		wsRouter.GET("", y1.Connect)
+		wsRouter.DELETE("", y1.Delete)
 
 	}
 }

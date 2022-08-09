@@ -25,3 +25,17 @@ type TaskType = int64
 const (
 	SSH TaskType = iota
 )
+
+// 任务类型
+
+const (
+	LinuxScan = "LinuxScan"
+)
+
+const (
+	Def     = "default"
+	Error   = "error"
+	Info    = "info"
+	Success = "success"
+	Warning = "warning"
+)

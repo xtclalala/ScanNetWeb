@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func CreateResult(dto []*SSH.BizSSHResult) (err error) {
-	err = global.Db.Create(&dto).Error
+func CreateResult(dtos []*SSH.BizSSHResult) (err error) {
+	err = global.Db.Create(&dtos).Error
 	return proError.WrapOrNil(err, "Create ssh task result fail!")
 }
 

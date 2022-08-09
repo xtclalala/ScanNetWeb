@@ -152,6 +152,8 @@ export interface GlobConfig {
   urlPrefix?: string;
   // Project abbreviation
   shortName?: string;
+  // websocket url prefix
+  wsUrlPrefix?: string;
 }
 export interface GlobEnvConfig {
   // Site title
@@ -160,4 +162,6 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL: string
   // uri prefix
   VITE_GLOB_API_URL_PREFIX: string
+  // websocket url prefix
+  VITE_GLOB_WS_URL_PREFIX: string
 }

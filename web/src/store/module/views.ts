@@ -6,6 +6,7 @@
 import { defineStore } from 'pinia'
 import { Menu } from '@/router/types'
 import { rName } from '@/enums/rName'
+import { store } from '@/store'
 
 interface ITabsViewStore {
   viewList: Menu[]
@@ -69,3 +70,8 @@ export const useViewStore = defineStore('tabsView', {
     },
   },
 })
+
+// Need to be used outside the setup
+export function useAppStoreWithOut() {
+  return useViewStore(store)
+}

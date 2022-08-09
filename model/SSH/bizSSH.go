@@ -4,29 +4,31 @@ import (
 	"github.com/google/uuid"
 	"github.com/xtclalala/ScanNetWeb/constant"
 	"github.com/xtclalala/ScanNetWeb/model"
+	"github.com/xtclalala/ScanNetWeb/model/file"
 )
 
 type BizSSH struct {
 	model.BaseID
-	Name     string             ` gorm:"not null;comment:任务name;"`
-	Desc     string             ` gorm:"comment:任务相关信息;"`
-	State    constant.TaskState ` gorm:"default:1;comment:任务状态"`
-	FileId   uuid.UUID          ` gorm:"comment:文件"`
-	Thread   int                ` gorm:"default:5;comment:thread"`
-	Sheet    string             ` gorm:"default:Sheet1;comment:sheet"`
-	Ip       *int               ` gorm:"comment:ip在文件的列数"`
-	Port     *int               ` gorm:"comment:port在文件的列数"`
-	User     *int               ` gorm:"comment:user在文件的列数"`
-	Password *int               ` gorm:"comment:password在文件的列数"`
-	Timeout  int                ` gorm:"default:5;comment:ssh连接超时事件"`
+	Name     string             `json:"name" gorm:"not null;comment:任务name;"`
+	Desc     string             `json:"desc" gorm:"comment:任务相关信息;"`
+	State    constant.TaskState `json:"state" gorm:"default:1;comment:任务状态"`
+	FileId   uuid.UUID          `json:"fileId" gorm:"comment:文件"`
+	Thread   int                `json:"thread" gorm:"default:5;comment:thread"`
+	Sheet    string             `json:"sheet" gorm:"default:Sheet1;comment:sheet"`
+	Ip       *int               `json:"ip" gorm:"comment:ip在文件的列数"`
+	Port     *int               `json:"port" gorm:"comment:port在文件的列数"`
+	User     *int               `json:"user" gorm:"comment:user在文件的列数"`
+	Password *int               `json:"password" gorm:"comment:password在文件的列数"`
+	Timeout  int                `json:"timeout" gorm:"default:5;comment:ssh连接超时事件"`
 
+	File         file.BizFile   `json:"file" gorm:"foreignKey:FileId"`
 	BizSSHResult []BizSSHResult `gorm:"foreignKey:TaskId"`
 }
 
 type SearchSSH struct {
 	model.BasePage
-	Name  string             `json:"name"`
-	State constant.TaskState `json:"state"`
+	Name  string             `json:"name" form:"name"`
+	State constant.TaskState `json:"state" form:"state"`
 }
 
 type CreateSSH struct {
@@ -57,11 +59,11 @@ type UpdateSSH struct {
 }
 
 type DeleteSSH struct {
-	Id int `json:"id" validate:"required" label:"任务Id"`
+	Id int `json:"id" validate:"required" label:"任务Id" form:"id"`
 }
 
 type RunSSH struct {
-	Id int `json:"id" validate:"required" label:"任务Id"`
+	Id int `json:"id" validate:"required" label:"任务Id" form:"id"`
 }
 
 type BizSSHResult struct {
@@ -71,11 +73,11 @@ type BizSSHResult struct {
 	User     string `gorm:"comment:账号;"`
 	Password string `gorm:"comment:密码;"`
 	Os       string `gorm:"comment:操作系统;"`
-	Result   string `gorm:"comment:结果;"`
+	Result   string `gorm:"type:longText;comment:结果;"`
 }
 
 type SearchSSHResult struct {
 	model.BasePage
-	TaskId int    `json:"taskId" validator:"required" label:"任务"`
-	Os     string `json:"os"`
+	TaskId int    `json:"taskId" validator:"required" label:"任务" form:"taskId"`
+	Os     string `json:"os" form:"os"`
 }

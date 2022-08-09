@@ -7,7 +7,6 @@ import (
 	"github.com/xtclalala/ScanNetWeb/model/file"
 )
 
-// 批量创建
 func Create(dtos []*file.BizFile) (err error) {
 	err = global.Db.Create(&dtos).Error
 	return proError.WrapOrNil(err, "create file: %s is fail", dtos)

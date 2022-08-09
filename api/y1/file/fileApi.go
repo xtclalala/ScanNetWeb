@@ -20,7 +20,6 @@ func Upload(c *gin.Context) {
 
 	var dataList []*file.BizFile
 	dataMap := map[string]string{}
-
 	uploadPath := global.System.File.Path
 	for _, f := range files {
 		id := uuid.New()

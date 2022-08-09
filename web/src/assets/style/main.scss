@@ -9,4 +9,10 @@ $table-padding: 24px;
   .n-pagination{
     justify-content: end;
   }
+  .n-data-table .n-data-table-th.n-data-table-th--fixed-right {
+    z-index: 0;
+  }
+  .n-data-table .n-data-table-td.n-data-table-td--fixed-right {
+    z-index: 0;
+  }
 }

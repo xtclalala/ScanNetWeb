@@ -7,7 +7,8 @@ import (
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/internal/proError"
 	"github.com/xtclalala/ScanNetWeb/model/SSH"
-	"github.com/xtclalala/ScanNetWeb/services/file"
+	"github.com/xtclalala/ScanNetWeb/model/file"
+	fileService "github.com/xtclalala/ScanNetWeb/services/file"
 	wsServicxe "github.com/xtclalala/ScanNetWeb/services/ws"
 	"github.com/xtclalala/ScanNetWeb/tools"
 	"gorm.io/gorm/clause"
@@ -17,7 +18,7 @@ import (
 func Search(dto *SSH.SearchSSH) (list []SSH.BizSSH, total int64, err error) {
 	limit := dto.PageSize
 	offset := dto.GetOffset()
-	db := global.Db.Model(&SSH.BizSSH{}).Where(&SSH.BizSSH{
+	db := global.Db.Model(&SSH.BizSSH{}).Preload("File").Where(&SSH.BizSSH{
 		State: dto.State,
 	})
 
@@ -40,7 +41,8 @@ func Create(dto *SSH.BizSSH) (err error) {
 }
 
 func UpdateAll(dto *SSH.BizSSH) (err error) {
-	err = global.Db.Updates(dto).Error
+	var fileData []file.BizFile
+	err = global.Db.Updates(dto).Association("File").Replace(fileData)
 	return proError.WrapOrNil(err, "Update ssh task: %s fail!", dto.Id)
 }
 
@@ -59,37 +61,12 @@ func FindById(id int) (task SSH.BizSSH, err error) {
 	return task, proError.WrapOrNil(err, "find ssh task: %s fail!", id)
 }
 
-type worker struct {
-	ip       string
-	port     string
-	user     string
-	password string
-}
-
-func readFile(workers *[]*worker, inFilename, sheet string, ip, port, user, password int) error {
-
-	rows, err := tools.Readfile(inFilename, sheet)
-	if err != nil {
-		return proError.Wrap(err, "read file %s is fail", inFilename)
-	}
-	for _, row := range rows {
-		i := &worker{
-			ip:       row[ip],
-			port:     row[port],
-			user:     row[user],
-			password: row[password],
-		}
-		*workers = append(*workers, i)
-	}
-	return nil
-}
-
 func Run(task *SSH.BizSSH) (err error) {
 
 	// read check file
 	workers := new([]*worker)
 	// read file
-	fileData, err := file.FindById(task.FileId)
+	fileData, err := fileService.FindById(task.FileId)
 	if err != nil {
 		return err
 	}
@@ -103,7 +80,6 @@ func Run(task *SSH.BizSSH) (err error) {
 	for _, item := range *workers {
 		var fn = func(worker *worker) func() {
 			return func() {
-				// connect
 				s := tools.NewSsh(worker.ip, worker.port, worker.user, worker.password, task.Timeout, osConfig)
 				s.Connect()
 				s.GetOS()
@@ -140,12 +116,37 @@ func Run(task *SSH.BizSSH) (err error) {
 		rErr := CreateResult(dataList)
 
 		if err = UpdateState(task.Id, constant.Finish); err != nil || rErr != nil {
-			wsServicxe.PushMessage(wsServicxe.NewMessage("扫描失败", "扫描结果存储失败或更新任务状态失败", "失败", 500))
+			wsServicxe.PushMessage(wsServicxe.NewMessage("扫描失败", "扫描结果存储失败或更新任务状态失败", constant.Error, constant.LinuxScan))
 			return
 		}
-		wsServicxe.PushMessage(wsServicxe.NewMessage("扫描成功", task.Name+"任务完成", "成功", 200))
+		wsServicxe.PushMessage(wsServicxe.NewMessage("扫描成功", task.Name+"任务完成", constant.Success, constant.LinuxScan))
 
 	}()
 
 	return
+}
+
+type worker struct {
+	ip       string
+	port     string
+	user     string
+	password string
+}
+
+func readFile(workers *[]*worker, inFilename, sheet string, ip, port, user, password int) error {
+
+	rows, err := tools.Readfile(inFilename, sheet)
+	if err != nil {
+		return proError.Wrap(err, "read file %s is fail", inFilename)
+	}
+	for _, row := range rows {
+		i := &worker{
+			ip:       row[ip],
+			port:     row[port],
+			user:     row[user],
+			password: row[password],
+		}
+		*workers = append(*workers, i)
+	}
+	return nil
 }

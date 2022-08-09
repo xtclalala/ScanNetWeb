@@ -40,3 +40,17 @@ export type Page = {
   page: number
   desc: boolean
 }
+
+export type BaseId = {
+  id: number
+  createTime: string
+  updateTime: string
+  deleted: string
+}
+
+export type BaseUUID = {
+  id: string
+  createTime: string
+  updateTime: string
+  deleted: string
+}

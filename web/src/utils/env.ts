@@ -14,18 +14,34 @@ export function getStorageShortName() {
 }
 
 export const useGlobalSetting = (): Readonly<GlobConfig> => {
-  const { VITE_GLOB_APP_TITLE, VITE_GLOB_API_URL, VITE_GLOB_API_URL_PREFIX } = getAppEnvConfig()
+  const {
+    VITE_GLOB_APP_TITLE,
+    VITE_GLOB_API_URL,
+    VITE_GLOB_API_URL_PREFIX,
+    VITE_GLOB_WS_URL_PREFIX,
+  } = getAppEnvConfig()
   return {
     title: VITE_GLOB_APP_TITLE,
     domain: VITE_GLOB_API_URL,
     urlPrefix: VITE_GLOB_API_URL_PREFIX,
+    wsUrlPrefix: VITE_GLOB_WS_URL_PREFIX,
   }
+}
+
+export const useWsUrl = (): Readonly<string> => {
+  const { domain, wsUrlPrefix } = useGlobalSetting()
+  return `${domain?.replace('http', 'ws').replace('https', 'wss')}${wsUrlPrefix}`
 }
 
 export function getAppEnvConfig() {
   const ENV = import.meta.env as unknown as GlobEnvConfig
 
-  const { VITE_GLOB_APP_TITLE, VITE_GLOB_API_URL, VITE_GLOB_API_URL_PREFIX } = ENV
+  const {
+    VITE_GLOB_APP_TITLE,
+    VITE_GLOB_API_URL,
+    VITE_GLOB_API_URL_PREFIX,
+    VITE_GLOB_WS_URL_PREFIX,
+  } = ENV
 
   if (!/^[a-zA-Z\_]*$/.test(VITE_GLOB_APP_TITLE)) {
     warn(
@@ -37,6 +53,7 @@ export function getAppEnvConfig() {
     VITE_GLOB_APP_TITLE,
     VITE_GLOB_API_URL,
     VITE_GLOB_API_URL_PREFIX,
+    VITE_GLOB_WS_URL_PREFIX,
   }
 }
 

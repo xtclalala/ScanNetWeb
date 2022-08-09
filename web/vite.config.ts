@@ -5,7 +5,7 @@ import { resolve } from 'path'
 
 const NODE_ENV = process.env.VITE_USER_NODE_ENV || 'development'
 const config = loadEnv(NODE_ENV, './')
-
+const wsServiceUrl = config.VITE_GLOB_SERVICE_URL.replace('http', 'ws').replace('https', 'wss')
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), VueSetupExtend()],
@@ -28,10 +28,9 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(new RegExp('^' + config.VITE_GLOB_API_URL_PREFIX), ''),
       },
-      '/ws': {
-        target: config.VITE_GLOB_SERVICE_URL,
+      [config.VITE_GLOB_WS_URL_PREFIX]: {
+        target: wsServiceUrl,
         changeOrigin: true,
-        rewrite: (path) => path.replace(new RegExp('^' + config.VITE_GLOB_API_URL_PREFIX), 'ws'),
       },
     },
   },

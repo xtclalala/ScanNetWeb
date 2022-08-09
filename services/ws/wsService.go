@@ -10,10 +10,11 @@ import (
 )
 
 type WsMessage struct {
-	Title     string `json:"title"`
-	Context   string `json:"context"`
-	State     string `json:"state"`
-	StateCode int    `json:"stateCode"`
+	Title   string `json:"title"`
+	Context string `json:"context"`
+	State   string `json:"state"`
+	// 任务对应的前端路由
+	Task string `json:"task"`
 }
 
 var (
@@ -136,11 +137,11 @@ func PushMessage(data WsMessage) {
 	wsMessageCh <- data
 }
 
-func NewMessage(title, context, state string, stateCode int) WsMessage {
+func NewMessage(title, context, state, task string) WsMessage {
 	return WsMessage{
-		Title:     title,
-		Context:   context,
-		State:     state,
-		StateCode: stateCode,
+		Title:   title,
+		Context: context,
+		State:   state,
+		Task:    task,
 	}
 }

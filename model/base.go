@@ -8,10 +8,10 @@ import (
 
 // BaseUUID uuid模板
 type BaseUUID struct {
-	Id         uuid.UUID `json:"id" gorm:"type:varchar(36);primary_key"`
-	CreateTime time.Time
-	UpdateTime time.Time
-	Deleted    gorm.DeletedAt
+	Id         uuid.UUID      `json:"id" gorm:"type:varchar(36);primary_key"`
+	CreateTime time.Time      `json:"createTime"`
+	UpdateTime time.Time      `json:"updateTime"`
+	Deleted    gorm.DeletedAt `json:"deleted"`
 }
 
 // BeforeCreate 创建时添加uuid
@@ -30,10 +30,10 @@ func (bUuid *BaseUUID) BeforeUpdate(tx *gorm.DB) (err error) {
 
 // BaseID 自增id模板
 type BaseID struct {
-	Id         int `json:"id" gorm:"primary_key"`
-	CreateTime time.Time
-	UpdateTime time.Time
-	Deleted    gorm.DeletedAt
+	Id         int            `json:"id" gorm:"primary_key"`
+	CreateTime time.Time      `json:"createTime"`
+	UpdateTime time.Time      `json:"updateTime"`
+	Deleted    gorm.DeletedAt `json:"deleted"`
 }
 
 // BeforeCreate 创建时添加uuid

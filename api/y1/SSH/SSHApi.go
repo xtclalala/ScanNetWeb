@@ -16,7 +16,7 @@ import (
 
 func Search(c *gin.Context) {
 	var data SSH.SearchSSH
-	if err := c.ShouldBindJSON(&data); err != nil {
+	if err := c.ShouldBindQuery(&data); err != nil {
 		net.FailWhitStatus(proError.ParamResolveFault, c)
 		return
 	}
@@ -118,7 +118,7 @@ func Update(c *gin.Context) {
 
 func Delete(c *gin.Context) {
 	var data SSH.DeleteSSH
-	if err := c.ShouldBindJSON(&data); err != nil {
+	if err := c.ShouldBindQuery(&data); err != nil {
 		net.FailWhitStatus(proError.ParamResolveFault, c)
 		return
 	}
@@ -146,7 +146,7 @@ func Delete(c *gin.Context) {
 
 func GetResult(c *gin.Context) {
 	var data SSH.SearchSSHResult
-	if err := c.ShouldBindJSON(&data); err != nil {
+	if err := c.ShouldBindQuery(&data); err != nil {
 		net.FailWhitStatus(proError.ParamResolveFault, c)
 		return
 	}
