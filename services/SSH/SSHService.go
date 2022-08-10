@@ -96,24 +96,25 @@ func Run(task *SSH.BizSSH) (err error) {
 	}
 	go func() {
 		tools.Start(fns, task.Thread)
-		var dataList []*SSH.BizSSHResult
+		var dataList []*SSH.BizSSHResultParse
 		data.Range(func(key, value any) bool {
 			values := value.([]string)
 			bytes, _ := json.Marshal(values[4:])
 
-			temp := &SSH.BizSSHResult{
+			temp := &SSH.BizSSHResultParse{
 				TaskId:   task.Id,
 				Addr:     values[0],
 				User:     values[1],
 				Password: values[2],
 				Os:       values[3],
-				Result:   string(bytes),
+				// todo 添加内容
+				BizSSHResult: SSH.BizSSHResult{Result: string(bytes)},
 			}
 			dataList = append(dataList, temp)
 			return true
 		})
 		// save data
-		rErr := CreateResult(dataList)
+		rErr := CreateResultPare(dataList)
 
 		if err = UpdateState(task.Id, constant.Finish); err != nil || rErr != nil {
 			wsServicxe.PushMessage(wsServicxe.NewMessage("扫描失败", "扫描结果存储失败或更新任务状态失败", constant.Error, constant.LinuxScan))

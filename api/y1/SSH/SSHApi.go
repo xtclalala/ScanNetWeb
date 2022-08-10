@@ -154,15 +154,12 @@ func GetResult(c *gin.Context) {
 		net.FailWithMessage(err.Error(), c)
 		return
 	}
-	list, total, err := service.SearchResult(&data)
+	vo, err := service.SelectResult(&data)
 	if err != nil {
 		net.FailWhitStatus(proError.SearchTaskResultError, c)
 		return
 	}
-	net.OkWithData(net.PageVO{
-		Items: list,
-		Total: total,
-	}, c)
+	net.OkWithData(vo, c)
 }
 
 func Run(c *gin.Context) {

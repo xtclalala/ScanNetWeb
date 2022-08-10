@@ -21,8 +21,8 @@ type BizSSH struct {
 	Password *int               `json:"password" gorm:"comment:password在文件的列数"`
 	Timeout  int                `json:"timeout" gorm:"default:5;comment:ssh连接超时事件"`
 
-	File         file.BizFile   `json:"file" gorm:"foreignKey:FileId"`
-	BizSSHResult []BizSSHResult `gorm:"foreignKey:TaskId"`
+	File              file.BizFile        `json:"file" gorm:"foreignKey:FileId"`
+	BizSSHResultParse []BizSSHResultParse `gorm:"foreignKey:TaskId"`
 }
 
 type SearchSSH struct {
@@ -66,18 +66,30 @@ type RunSSH struct {
 	Id int `json:"id" validate:"required" label:"任务Id" form:"id"`
 }
 
-type BizSSHResult struct {
+type BizSSHResultParse struct {
 	model.BaseUUID
 	TaskId   int    `json:"taskId" gorm:"not null;comment:任务Id;"`
 	Addr     string `json:"addr" gorm:"comment:目标地址;"`
 	User     string `json:"user" gorm:"comment:账号;"`
 	Password string `json:"password" gorm:"comment:密码;"`
 	Os       string `json:"os" gorm:"comment:操作系统;"`
-	Result   string `json:"result" gorm:"type:longText;comment:结果;"`
+	// todo 需要定下来扫描以后 分析下来的结果存什么，字段是什么
+
+	BizSSHResult BizSSHResult `gorm:"foreignKey:ResultId"`
 }
 
-type SearchSSHResult struct {
+type SearchSSHResultParse struct {
 	model.BasePage
 	TaskId int    `json:"taskId" validator:"required" label:"任务" form:"taskId"`
 	Os     string `json:"os" form:"os"`
+}
+
+type BizSSHResult struct {
+	model.BaseUUID
+	ResultId uuid.UUID `json:"ResultId" gorm:"comment:结果id;"`
+	Result   string    `json:"result" gorm:"type:longText;comment:未分析结果;"`
+}
+
+type SearchSSHResult struct {
+	ResultId uuid.UUID `json:"resultId"  validator:"required" label:"任务" form:"resultId"`
 }
