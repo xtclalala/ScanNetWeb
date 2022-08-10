@@ -72,6 +72,6 @@ export const useViewStore = defineStore('tabsView', {
 })
 
 // Need to be used outside the setup
-export function useAppStoreWithOut() {
+export function useViewStoreWithOut() {
   return useViewStore(store)
 }

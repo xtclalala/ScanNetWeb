@@ -6,7 +6,7 @@
 import { h, VNodeChild } from 'vue'
 import { YIcon } from '@/components'
 import { TaskState, TaskStateMap } from '@/enums/bizEnum'
-import { NTag } from 'naive-ui'
+import { NDescriptions, NDescriptionsItem, NEmpty, NTag} from "naive-ui";
 
 /**
  * 渲染图标
@@ -16,6 +16,10 @@ export const renderIcon = (icon: string): (() => VNodeChild) => {
   return () => h(YIcon, { iconType: icon })
 }
 
+/**
+ * 渲染任务状态
+ * @param taskState
+ */
 export const renderTaskState = (taskState: TaskState): VNodeChild => {
   switch (taskState) {
     case TaskState.Build:
@@ -31,6 +35,10 @@ export const renderTaskState = (taskState: TaskState): VNodeChild => {
   }
 }
 
+/**
+ * 渲染构建任务
+ * @param taskState
+ */
 export const renderTaskStateBuild = (): VNodeChild =>
   h(
     NTag,
@@ -45,6 +53,10 @@ export const renderTaskStateBuild = (): VNodeChild =>
     }
   )
 
+/**
+ * 渲染准备任务
+ * @param taskState
+ */
 export const renderTaskStateReady = (): VNodeChild =>
   h(
     NTag,
@@ -59,6 +71,10 @@ export const renderTaskStateReady = (): VNodeChild =>
     }
   )
 
+/**
+ * 渲染运行任务
+ * @param taskState
+ */
 export const renderTaskStateDoing = (): VNodeChild =>
   h(
     NTag,
@@ -73,6 +89,10 @@ export const renderTaskStateDoing = (): VNodeChild =>
     }
   )
 
+/**
+ * 渲染完成任务
+ * @param taskState
+ */
 export const renderTaskStateFinish = (): VNodeChild =>
   h(
     NTag,
@@ -87,6 +107,10 @@ export const renderTaskStateFinish = (): VNodeChild =>
     }
   )
 
+/**
+ * 渲染异常任务
+ * @param taskState
+ */
 export const renderTaskStateDefault = (): VNodeChild =>
   h(
     NTag,
@@ -100,3 +124,22 @@ export const renderTaskStateDefault = (): VNodeChild =>
       icon: renderIcon(TaskStateMap[TaskState.def].icon),
     }
   )
+
+export const renderTaskResult = (
+  result: Array<string>,
+  target: 'left' | 'top' = 'left'
+): VNodeChild => {
+  const renderList: Array<VNodeChild> = []
+  const l = result.length
+  for (let i = 0; i < l; i = i + 2) {
+    renderList.push(renderTaskResultItem([result[i], result[i + 1]]))
+  }
+  if (renderList.length === 0) {
+    return h(NEmpty, { description: '暂无扫描结果' })
+  }
+  return h(NDescriptions, { labelPlacement: target, column: 1 }, { default: () => renderList })
+}
+
+export const renderTaskResultItem = (result: Array<string>): VNodeChild => {
+  return h(NDescriptionsItem, {}, { label: () => result[0], default: () => result[1] })
+}

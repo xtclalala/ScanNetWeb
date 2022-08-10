@@ -68,12 +68,12 @@ type RunSSH struct {
 
 type BizSSHResult struct {
 	model.BaseUUID
-	TaskId   int    `gorm:"not null;comment:任务Id;"`
-	Addr     string `gorm:"comment:目标地址;"`
-	User     string `gorm:"comment:账号;"`
-	Password string `gorm:"comment:密码;"`
-	Os       string `gorm:"comment:操作系统;"`
-	Result   string `gorm:"type:longText;comment:结果;"`
+	TaskId   int    `json:"taskId" gorm:"not null;comment:任务Id;"`
+	Addr     string `json:"addr" gorm:"comment:目标地址;"`
+	User     string `json:"user" gorm:"comment:账号;"`
+	Password string `json:"password" gorm:"comment:密码;"`
+	Os       string `json:"os" gorm:"comment:操作系统;"`
+	Result   string `json:"result" gorm:"type:longText;comment:结果;"`
 }
 
 type SearchSSHResult struct {

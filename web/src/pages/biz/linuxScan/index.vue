@@ -2,7 +2,6 @@
 import { ref, h } from 'vue'
 import { useTable } from '@/hooks/comHooks/useTable'
 import { YIcon } from '@/components'
-
 import {
   FormRules,
   NButton,
@@ -15,8 +14,6 @@ import {
   useMessage,
 } from 'naive-ui'
 import { Download, Upload } from '@/api/common/file'
-import { send, wsConnect } from '@/api/common/ws'
-import { useWsUrl } from '@/utils/env'
 import { Page } from '@/api/common/types/login'
 import { PageResult, Result } from '#axios'
 import {
@@ -35,11 +32,15 @@ import { completeMerger } from '@/utils/helper/objectHelper'
 import { useModal } from '@/hooks/comHooks/useModal'
 import { renderTaskState } from '@/utils/render'
 import { TaskState, TaskStateMap } from '@/enums/bizEnum'
+import { rName } from '@/enums/rName'
+import { useEmit } from '@/hooks/comHooks/useEmit'
+import BizSshResult from './components/result.vue'
+
 const message = useMessage()
+const bizSshResultRef = ref<InstanceType<typeof BizSshResult> | null>(null)
+
 const fileList = ref<UploadFileInfo[]>([])
-
-
-
+const { url, header } = Upload()
 const handleDownload = async (file: UploadFileInfo) => {
   const url = Download({ id: file.id })
   const a = document.createElement('a')
@@ -74,8 +75,6 @@ const CallBackRemove = ({ file, fileList }): boolean => {
   sshModal.value.fileId = null
   return true
 }
-
-const { url, header } = Upload()
 
 const selectOptions: Array<SelectOption | SelectGroupOption> = [
   {
@@ -166,16 +165,14 @@ const columns = [
                 NButton,
                 {
                   onClick: () => {
-                    isAdd.value = false
-                    sshModal.value = row
-                    openModal()
+                    bizSshResultRef.value?.open(row.id)
                   },
                   text: true,
                 },
                 { default: () => '扫描结果' }
               ),
             ]
-            if (row.state === TaskState.Build || row.state === TaskState.Ready) {
+            if (row.state !== TaskState.Doing) {
               options.push(h(NDivider, { vertical: true }))
               options.push(
                 h(
@@ -259,10 +256,10 @@ const tableApi = async (page: Page, searchData: any) => {
     isMessage: false,
   })
 }
-const [pagination, loading, data, searchData, getData, doSearch, doReset, key2id] = useTable<
-  CreateSSH,
+const [pagination, loading, data, searchData, getData, doSearch, doReset, key2id, tableHeight] = useTable<
+  BizSSH,
   SearchSSH
->(tableApi, { page: 1, pageSize: 10, desc: false }, sTmpData, 'linuxScan')
+>(tableApi, { page: 1, pageSize: 10, desc: false }, sTmpData, rName.BIZ_LINUX_SCAN)
 
 const rules: FormRules = {
   name: {
@@ -335,10 +332,15 @@ const [
     timeout: 5,
   },
   {},
-  'linuxScan'
+  rName.BIZ_LINUX_SCAN
+)
+const { SaveEmit } = useEmit()
+
+SaveEmit(
+  () => getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false }),
+  rName.BIZ_LINUX_SCAN
 )
 
-wsConnect(useWsUrl())
 getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false })
 </script>
 <template>
@@ -377,7 +379,7 @@ getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false })
       :columns="columns"
       :data="data"
       :scroll-x="1400"
-      :max-height="750"
+      :max-height="tableHeight"
       :loading="loading"
       :row-key="key2id"
     />
@@ -404,7 +406,6 @@ getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false })
         <n-input v-model:value="sshModal.desc" placeholder="任务简介" />
       </n-form-item>
       <n-form-item label="文件" path="fileList">
-        <!--        todo 上传文件 点击删除添加回调-->
         <n-upload
           :action="url"
           :headers="header"
@@ -417,7 +418,6 @@ getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false })
         >
           <n-button>上传文件</n-button>
         </n-upload>
-        <!--        <n-input v-model:value="sshModal.path" placeholder="路径" />-->
       </n-form-item>
       <n-form-item label="并发量" path="thread">
         <n-input-number v-model:value="sshModal.thread" placeholder="并发量" />
@@ -448,8 +448,7 @@ getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false })
       </n-space>
     </template>
   </n-modal>
-
-  <!--  <n-button @click="st">send</n-button>-->
+  <biz-ssh-result ref="bizSshResultRef"></biz-ssh-result>
 </template>
 
 <style scoped></style>

@@ -1,6 +1,7 @@
 import { isNullOrUnDef } from '@/utils/is'
 import { reactive, ref } from 'vue'
 import { Page } from '@/api/common/types/login'
+import { useClientView } from '@/hooks/comHooks/useClientView'
 
 const tableMap = {}
 const tableMapStates = {}
@@ -58,6 +59,22 @@ export const useTable = <T, D>(dataApi: Function, page: Page, searchObj: D, key:
 
   const key2id = (row) => row.id
 
+  const getTableHeight = () => {
+    const { height } = useClientView()
+    return height * 0.5
+  }
+
   const { pagination, loading, data, searchData } = createTable(page, key)
-  return [pagination, loading, data, searchData, getData, doSearch, doReset, key2id]
+
+  return [
+    pagination,
+    loading,
+    data,
+    searchData,
+    getData,
+    doSearch,
+    doReset,
+    key2id,
+    getTableHeight(),
+  ]
 }

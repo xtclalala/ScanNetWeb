@@ -1,5 +1,5 @@
 import { PageResult, RequestOptions, Result } from '#axios'
-import { BaseId, Page } from '@/api/common/types/login'
+import { BaseId, Page, BaseUUID } from '@/api/common/types/login'
 import { defHttp } from '@/service'
 import { File } from '@/api/common/types/file'
 import { TaskState } from '@/enums/bizEnum'
@@ -52,5 +52,20 @@ export const Delete = <T = Result>(params: DeleteSSH, options?: RequestOptions) 
 export const Run = <T = Result>(params: RunSSH, options?: RequestOptions) =>
   defHttp.post<T>({ url: Api.RunSSH, params }, options)
 
-// export const RunResult = <T = Result>(params: CreateSSH, options?: RequestOptions) =>
-//     defHttp.post<T>({ url: Api.Login, params }, options)
+export type BizSSHResult = BaseUUID & {
+  taskId: number | null
+  addr: string
+  user: string
+  password: string
+  os: string
+  result: string
+}
+
+export type SearchSSHResult = Partial<Pick<BizSSHResult, 'taskId' | 'os'>>
+
+export type SearchSSHResultWithPage = Page & SearchSSHResult
+
+export const SearchResult = <T = Result>(
+  params: SearchSSHResultWithPage,
+  options?: RequestOptions
+) => defHttp.get<T>({ url: Api.RunSSH, params }, options)

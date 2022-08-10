@@ -214,9 +214,6 @@ func tryUpdateTaskState(data *SSH.BizSSH) (err error) {
 	if err = updateTaskStateDoing(data); err != nil {
 		return
 	}
-	if err = updateTaskStateFinish(data); err != nil {
-		return
-	}
 	return nil
 }
 

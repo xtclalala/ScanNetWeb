@@ -1,3 +1,9 @@
+import { useViewStoreWithOut } from '@/store/module/views'
+import { h } from 'vue'
+import { useEmit } from '@/hooks/comHooks/useEmit'
+import { NButton } from 'naive-ui'
+import { useRouter } from 'vue-router'
+
 let ws
 export const wsConnect = (url: string) => {
   if (ws === undefined) {
@@ -7,14 +13,37 @@ export const wsConnect = (url: string) => {
   ws.onmessage = (res) => {
     const resData = JSON.parse(res.data)
 
-    if (resData.task) {
-      // todo 如果当前页在扫描任务列表的页面，需要刷新列表
-      // todo 如果不在当前页需要一个跳转按钮
+    const view = useViewStoreWithOut()
+    const router = useRouter()
+    let str
+    if (view.currentView === resData.task) {
+      const { GetEmit } = useEmit()
+      const fn = GetEmit(resData.task)
+      if (fn !== null) {
+        fn()
+      }
+    } else {
+      str = '前往'
     }
-    window.$notification?.create({
+    let n = window.$notification?.create({
       title: resData.title,
       content: resData.context,
       type: resData.state,
+      action: () =>
+        h(
+          NButton,
+          {
+            text: true,
+            type: 'primary',
+            onClick: () => {
+              router.push({ name: resData.task })
+              n?.destroy()
+            },
+          },
+          {
+            default: () => str,
+          }
+        ),
     })
   }
 

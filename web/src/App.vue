@@ -22,6 +22,8 @@ import { darkTheme, zhCN, lightTheme } from 'naive-ui'
 import { useLoadingBar, useDialog, useMessage, useNotification } from 'naive-ui'
 import { useAppStore } from '@/store/module/app'
 import { ThemeEnum } from '@/enums/appEnum'
+import { wsConnect } from '@/api/common/ws'
+import { useWsUrl } from '@/utils/env'
 
 function registerNaiveTools() {
   window.$loadingBar = useLoadingBar()
@@ -41,4 +43,5 @@ const NaiveProviderContent = defineComponent({
 
 const app = useAppStore()
 const theme = computed(() => (app.getDarkMode === ThemeEnum.LIGHT ? lightTheme : darkTheme))
+// wsConnect(useWsUrl())
 </script>
