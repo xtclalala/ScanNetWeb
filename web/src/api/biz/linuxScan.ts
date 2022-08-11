@@ -7,6 +7,7 @@ import { TaskState } from '@/enums/bizEnum'
 enum Api {
   SSH = '/ssh/ssh',
   RunSSH = '/ssh/run',
+  RunSSHParse = '/ssh/runParse',
 }
 
 export type BizSSH = BaseId & {
@@ -52,20 +53,29 @@ export const Delete = <T = Result>(params: DeleteSSH, options?: RequestOptions) 
 export const Run = <T = Result>(params: RunSSH, options?: RequestOptions) =>
   defHttp.post<T>({ url: Api.RunSSH, params }, options)
 
-export type BizSSHResult = BaseUUID & {
+export type BizSSHResultParse = BaseUUID & {
   taskId: number | null
   addr: string
   user: string
   password: string
   os: string
+}
+
+export type SearchSSHResultParse = Partial<Pick<BizSSHResultParse, 'taskId' | 'os'>>
+
+export type SearchSSHResultParseWithPage = Page & SearchSSHResultParse
+
+export const SearchResultParse = <T = Result>(
+  params: SearchSSHResultParseWithPage,
+  options?: RequestOptions
+) => defHttp.get<T>({ url: Api.RunSSHParse, params }, options)
+
+export type BizSSHResult = BaseUUID & {
+  resultId: number | null
   result: string
 }
 
-export type SearchSSHResult = Partial<Pick<BizSSHResult, 'taskId' | 'os'>>
+export type SearchSSHResult = Pick<BizSSHResult, 'resultId'>
 
-export type SearchSSHResultWithPage = Page & SearchSSHResult
-
-export const SearchResult = <T = Result>(
-  params: SearchSSHResultWithPage,
-  options?: RequestOptions
-) => defHttp.get<T>({ url: Api.RunSSH, params }, options)
+export const SearchResult = <T = Result>(params: SearchSSHResult, options?: RequestOptions) =>
+  defHttp.get<T>({ url: Api.RunSSH, params }, options)

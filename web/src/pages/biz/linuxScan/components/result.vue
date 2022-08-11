@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import { YIcon } from '@/components'
 import { NButton, NSpace } from 'naive-ui'
 import {
-  BizSSHResult,
-  SearchResult,
-  SearchSSHResult,
-  SearchSSHResultWithPage,
+  BizSSHResultParse,
+  SearchResultParse,
+  SearchSSHResultParse,
+  SearchSSHResultParseWithPage,
 } from '@/api/biz/linuxScan'
 import { PageResult } from '#axios'
 import { Page } from '@/api/common/types/login'
@@ -38,30 +38,30 @@ const columns = [
     key: 'os',
     width: 100,
   },
-  {
-    title: '结果',
-    key: 'result',
-    width: 300,
-    render: (row) => {
-      const result = JSON.parse(row.result)
-      return renderTaskResult(result)
-    },
-  },
+  // {
+  //   title: '结果',
+  //   key: 'result',
+  //   width: 300,
+  //   render: (row) => {
+  //     const result = JSON.parse(row.result)
+  //     return renderTaskResult(result)
+  //   },
+  // },
 ]
 const sTmpData = {
   os: '',
   taskId: null,
 }
 const tableApi = async (page: Page, searchData: any) => {
-  return SearchResult<PageResult<Array<BizSSHResult>>>(
-    completeMerger<SearchSSHResultWithPage>(page, searchData.value),
+  return SearchResultParse<PageResult<Array<BizSSHResultParse>>>(
+    completeMerger<SearchSSHResultParseWithPage>(page, searchData.value),
     {
       isMessage: false,
     }
   )
 }
 const [pagination, loading, data, searchData, getData, doSearch, doReset, key2id, tableHeight] =
-  useTable<BizSSHResult, SearchSSHResult>(
+  useTable<BizSSHResultParse, SearchSSHResultParse>(
     tableApi,
     { page: 1, pageSize: 10, desc: false },
     sTmpData,
@@ -107,7 +107,7 @@ defineExpose({
         <n-data-table
           :columns="columns"
           :data="data"
-          :scroll-x="800"
+          :scroll-x="500"
           :max-height="tableHeight"
           :loading="loading"
           :row-key="key2id"

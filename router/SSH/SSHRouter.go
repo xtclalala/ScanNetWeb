@@ -14,5 +14,6 @@ func InitSSHRouter(router *gin.RouterGroup) {
 		sshRouter.DELETE("ssh", y1.Delete)
 		sshRouter.POST("run", y1.Run)
 		sshRouter.GET("run", y1.GetResult)
+		sshRouter.GET("runParse", y1.GetResultParse)
 	}
 }

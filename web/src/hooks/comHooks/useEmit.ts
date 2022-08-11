@@ -3,12 +3,12 @@ import { isNullOrUnDef } from '@/utils/is'
 /**
  * 所有 emit 内容的存储点
  */
-const emitMap = {}
+const emitMap: { [prop: string]: Array<CallBackType> } = {}
 
 /**
  * 所有 emit 是否被激活的存储点
  */
-const emitMapStates = {}
+const emitMapNumber: { [Props: string]: number } = {}
 
 type CallBackType = () => void
 
@@ -20,20 +20,31 @@ type EmitType = {
 export const useEmit = (): EmitType => {
   const SaveEmit = (fn: CallBackType, target: string): void => {
     // 是否创建过该弹窗
-    // todo 待执行函数可以存多个
-    if (isNullOrUnDef(emitMapStates[target])) {
-      emitMapStates[target] = true
-      emitMap[target] = fn
+    if (isNullOrUnDef(emitMapNumber[target])) {
+      emitMapNumber[target] = 1
+      emitMap[target] = [fn]
     } else {
-      emitMap[target] = fn
+      emitMapNumber[target]++
+      emitMap[target].push(fn)
     }
   }
 
-  const GetEmit = (target: string): CallBackType | null => {
-    if (isNullOrUnDef(emitMapStates[target])) {
-      return null
+  const GetEmit = (target: string): CallBackType => {
+    if (isNullOrUnDef(emitMapNumber[target])) {
+      return () => {}
     }
-    return emitMap[target]
+    return (): void => {
+      if (isNullOrUnDef(emitMapNumber[target])) {
+        return
+      }
+      if (emitMapNumber[target] !== emitMap[target].length) {
+        // window.$message?.warning("xxxxx")
+        return
+      }
+      for (const fn of emitMap[target]) {
+        fn()
+      }
+    }
   }
   return {
     SaveEmit,

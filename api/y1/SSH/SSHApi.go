@@ -144,24 +144,6 @@ func Delete(c *gin.Context) {
 	net.Ok(c)
 }
 
-func GetResult(c *gin.Context) {
-	var data SSH.SearchSSHResult
-	if err := c.ShouldBindQuery(&data); err != nil {
-		net.FailWhitStatus(proError.ParamResolveFault, c)
-		return
-	}
-	if err := validator.Validate(&data); err != nil {
-		net.FailWithMessage(err.Error(), c)
-		return
-	}
-	vo, err := service.SelectResult(&data)
-	if err != nil {
-		net.FailWhitStatus(proError.SearchTaskResultError, c)
-		return
-	}
-	net.OkWithData(vo, c)
-}
-
 func Run(c *gin.Context) {
 	var data SSH.RunSSH
 	if err := c.ShouldBindJSON(&data); err != nil {
@@ -191,6 +173,42 @@ func Run(c *gin.Context) {
 	}
 
 	net.Ok(c)
+}
+
+func GetResult(c *gin.Context) {
+	var data SSH.SearchSSHResult
+	if err := c.ShouldBindQuery(&data); err != nil {
+		net.FailWhitStatus(proError.ParamResolveFault, c)
+		return
+	}
+	if err := validator.Validate(&data); err != nil {
+		net.FailWithMessage(err.Error(), c)
+		return
+	}
+	vo, err := service.SelectResult(&data)
+	if err != nil {
+		net.FailWhitStatus(proError.SearchTaskResultError, c)
+		return
+	}
+	net.OkWithData(vo, c)
+}
+
+func GetResultParse(c *gin.Context) {
+	var data SSH.SearchSSHResultParse
+	if err := c.ShouldBindQuery(&data); err != nil {
+		net.FailWhitStatus(proError.ParamResolveFault, c)
+		return
+	}
+	if err := validator.Validate(&data); err != nil {
+		net.FailWithMessage(err.Error(), c)
+		return
+	}
+	list, total, err := service.SearchResultParse(&data)
+	if err != nil {
+		net.FailWhitStatus(proError.SearchTaskResultError, c)
+		return
+	}
+	net.OkWithData(net.PageVO{Items: list, Total: total}, c)
 }
 
 func checkTaskIsReady(data *SSH.BizSSH) constant.TaskState {
