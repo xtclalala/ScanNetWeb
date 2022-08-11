@@ -75,21 +75,10 @@ type BizSSHResultParse struct {
 	Os       string `json:"os" gorm:"comment:操作系统;"`
 	// todo 需要定下来扫描以后 分析下来的结果存什么，字段是什么
 
-	BizSSHResult BizSSHResult `gorm:"foreignKey:ResultId"`
 }
 
 type SearchSSHResultParse struct {
 	model.BasePage
 	TaskId int    `json:"taskId" validator:"required" label:"任务" form:"taskId"`
 	Os     string `json:"os" form:"os"`
-}
-
-type BizSSHResult struct {
-	model.BaseUUID
-	ResultId uuid.UUID `json:"ResultId" gorm:"comment:结果id;"`
-	Result   string    `json:"result" gorm:"type:longText;comment:未分析结果;"`
-}
-
-type SearchSSHResult struct {
-	ResultId uuid.UUID `json:"resultId"  validator:"required" label:"任务" form:"resultId"`
 }

@@ -175,24 +175,6 @@ func Run(c *gin.Context) {
 	net.Ok(c)
 }
 
-func GetResult(c *gin.Context) {
-	var data SSH.SearchSSHResult
-	if err := c.ShouldBindQuery(&data); err != nil {
-		net.FailWhitStatus(proError.ParamResolveFault, c)
-		return
-	}
-	if err := validator.Validate(&data); err != nil {
-		net.FailWithMessage(err.Error(), c)
-		return
-	}
-	vo, err := service.SelectResult(&data)
-	if err != nil {
-		net.FailWhitStatus(proError.SearchTaskResultError, c)
-		return
-	}
-	net.OkWithData(vo, c)
-}
-
 func GetResultParse(c *gin.Context) {
 	var data SSH.SearchSSHResultParse
 	if err := c.ShouldBindQuery(&data); err != nil {

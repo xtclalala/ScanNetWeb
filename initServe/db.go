@@ -56,7 +56,7 @@ func InitDb() *gorm.DB {
 
 func InitTables(db *gorm.DB) {
 	// 加 model
-	err := db.AutoMigrate(&SSH.BizSSH{}, &file.BizFile{}, &SSH.BizSSHResultParse{}, &SSH.BizSSHResult{})
+	err := db.AutoMigrate(&SSH.BizSSH{}, &file.BizFile{}, &SSH.BizSSHResultParse{})
 	if err != nil {
 		panic(fmt.Errorf("table of database create failed:", err))
 	}

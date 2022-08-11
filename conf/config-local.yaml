@@ -18,3 +18,8 @@ jwt:
   bufferTime: '5'
 file:
   path: 'docs/upload'
+
+shell:
+  name: 'test.sh'
+  absPath: '/download'
+  localPath: './docs/shell'

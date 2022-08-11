@@ -69,13 +69,3 @@ export const SearchResultParse = <T = Result>(
   params: SearchSSHResultParseWithPage,
   options?: RequestOptions
 ) => defHttp.get<T>({ url: Api.RunSSHParse, params }, options)
-
-export type BizSSHResult = BaseUUID & {
-  resultId: number | null
-  result: string
-}
-
-export type SearchSSHResult = Pick<BizSSHResult, 'resultId'>
-
-export const SearchResult = <T = Result>(params: SearchSSHResult, options?: RequestOptions) =>
-  defHttp.get<T>({ url: Api.RunSSH, params }, options)

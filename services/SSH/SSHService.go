@@ -2,7 +2,6 @@ package SSH
 
 import (
 	"encoding/json"
-	"github.com/xtclalala/ScanNetWeb/conf"
 	"github.com/xtclalala/ScanNetWeb/constant"
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/internal/proError"
@@ -12,6 +11,8 @@ import (
 	wsServicxe "github.com/xtclalala/ScanNetWeb/services/ws"
 	"github.com/xtclalala/ScanNetWeb/tools"
 	"gorm.io/gorm/clause"
+	"io"
+	"strings"
 	"sync"
 )
 
@@ -73,21 +74,18 @@ func Run(task *SSH.BizSSH) (err error) {
 	if err = readFile(workers, tools.FileAbsPath(fileData.Path, fileData.Id.String()), task.Sheet, *task.Ip, *task.Port, *task.User, *task.Password); err != nil {
 		return err
 	}
-	osConfig := conf.LinuxScanConfig()
 	var fns []func()
 
 	data := &sync.Map{}
 	for _, item := range *workers {
 		var fn = func(worker *worker) func() {
 			return func() {
-				s := tools.NewSsh(worker.ip, worker.port, worker.user, worker.password, task.Timeout, osConfig)
+				s := tools.NewSsh(worker.ip, worker.port, worker.user, worker.password, task.Timeout)
 				s.Connect()
-				s.GetOS()
-				values := s.Save()
 				// you can do something, run diy cmd
 				res := s.ScanOS()
-				values = append(values, res...)
-				data.Store(worker.ip, values)
+				// todo
+				data.Store(worker.ip, res)
 			}
 
 		}(item)
@@ -98,19 +96,18 @@ func Run(task *SSH.BizSSH) (err error) {
 		tools.Start(fns, task.Thread)
 		var dataList []*SSH.BizSSHResultParse
 		data.Range(func(key, value any) bool {
-			values := value.([]string)
-			bytes, _ := json.Marshal(values[4:])
-
-			temp := &SSH.BizSSHResultParse{
-				TaskId:   task.Id,
-				Addr:     values[0],
-				User:     values[1],
-				Password: values[2],
-				Os:       values[3],
-				// todo 添加内容
-				BizSSHResult: SSH.BizSSHResult{Result: string(bytes)},
+			res := value.(string)
+			dec := json.NewDecoder(strings.NewReader(res))
+			var parse SSH.BizSSHResultParse
+			for {
+				if err = dec.Decode(&parse); err == io.EOF {
+					parse.TaskId = task.Id
+					break
+				} else if err != nil {
+					// todo log err  not panic
+				}
 			}
-			dataList = append(dataList, temp)
+			dataList = append(dataList, &parse)
 			return true
 		})
 		// save data

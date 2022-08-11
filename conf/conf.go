@@ -1,16 +1,12 @@
 package conf
 
-import (
-	"github.com/spf13/viper"
-	"log"
-)
-
 type Config struct {
 	App    *App    `mapstructure:"app" yaml:"app"`
 	Db     *Db     `mapstructure:"db"  yaml:"db"`
 	Logger *Logger `mapstructure:"logger"  yaml:"logger"`
 	Jwt    *Jwt    `mapstructure:"jwt"  yaml:"jwt"`
 	File   *File   `mapstructure:"file"  yaml:"file"`
+	Shell  *shell  `mapstructure:"shell"`
 }
 
 type App struct {
@@ -43,17 +39,8 @@ type Jwt struct {
 	BufferTime int64  `mapstructure:"bufferTime" yaml:"bufferTime"`
 }
 
-func LinuxScanConfig() map[string][]string {
-	viper.SetConfigType("yaml")
-	viper.SetConfigFile("./conf/config-linuxScan.yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
-	osConfig := viper.GetStringMapStringSlice("os")
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-	return osConfig
+type shell struct {
+	Name      string `mapstructure:"name"`
+	AbsPath   string `mapstructure:"absPath"`
+	LocalPath string `mapstructure:"localPath"`
 }
