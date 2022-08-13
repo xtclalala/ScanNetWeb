@@ -43,5 +43,5 @@ const NaiveProviderContent = defineComponent({
 
 const app = useAppStore()
 const theme = computed(() => (app.getDarkMode === ThemeEnum.LIGHT ? lightTheme : darkTheme))
-// wsConnect(useWsUrl())
+wsConnect(useWsUrl())
 </script>

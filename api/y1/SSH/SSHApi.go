@@ -176,7 +176,7 @@ func Run(c *gin.Context) {
 }
 
 func GetResultParse(c *gin.Context) {
-	var data SSH.SearchSSHResultParse
+	var data SSH.SearchSSHResult
 	if err := c.ShouldBindQuery(&data); err != nil {
 		net.FailWhitStatus(proError.ParamResolveFault, c)
 		return

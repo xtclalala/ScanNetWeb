@@ -85,7 +85,7 @@ func Run(task *SSH.BizSSH) (err error) {
 				// you can do something, run diy cmd
 				res := s.ScanOS()
 				// todo
-				data.Store(worker.ip, res)
+				data.Store(worker, res)
 			}
 
 		}(item)
@@ -94,20 +94,33 @@ func Run(task *SSH.BizSSH) (err error) {
 	}
 	go func() {
 		tools.Start(fns, task.Thread)
-		var dataList []*SSH.BizSSHResultParse
+		var dataList []SSH.BizSSHResult
 		data.Range(func(key, value any) bool {
-			res := value.(string)
-			dec := json.NewDecoder(strings.NewReader(res))
-			var parse SSH.BizSSHResultParse
-			for {
-				if err = dec.Decode(&parse); err == io.EOF {
-					parse.TaskId = task.Id
-					break
-				} else if err != nil {
-					// todo log err  not panic
-				}
+			worker := key.(*worker)
+			res := strings.Split(strings.ReplaceAll(value.(string), "nohup.out", "*"), "||")
+
+			parse := SSH.BizSSHResult{
+				TaskId:   task.Id,
+				Addr:     worker.ip,
+				User:     worker.user,
+				Password: worker.password,
 			}
-			dataList = append(dataList, &parse)
+			var items []SSH.BizSSHResultItem
+			for _, re := range res {
+				dec := json.NewDecoder(strings.NewReader(re))
+				item := SSH.BizSSHResultItem{}
+				for {
+					if err := dec.Decode(&item); err == io.EOF {
+						break
+					} else if err != nil {
+						// todo log err  not panic
+						break
+					}
+				}
+				items = append(items, item)
+			}
+			parse.Items = items
+			dataList = append(dataList, parse)
 			return true
 		})
 		// save data

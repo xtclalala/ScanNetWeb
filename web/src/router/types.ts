@@ -1,6 +1,6 @@
 import type { RouteRecordRaw, RouteMeta } from 'vue-router'
 import { RoleEnum } from '@/enums/roleEnum'
-import { defineComponent, VNode } from 'vue'
+import { defineComponent, VNodeChild } from 'vue'
 
 export type Component<T = any> = ReturnType<typeof defineComponent> | (() => Promise<T>)
 
@@ -28,7 +28,7 @@ export interface Menu {
   // menu route title
   title: string
 
-  icon: string | (() => VNode)
+  icon: string | (() => VNodeChild)
 
   permissions?: [] | null
 

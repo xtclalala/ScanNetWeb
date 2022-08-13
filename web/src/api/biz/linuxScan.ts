@@ -53,19 +53,26 @@ export const Delete = <T = Result>(params: DeleteSSH, options?: RequestOptions) 
 export const Run = <T = Result>(params: RunSSH, options?: RequestOptions) =>
   defHttp.post<T>({ url: Api.RunSSH, params }, options)
 
-export type BizSSHResultParse = BaseUUID & {
+export type BizSSHResult = BaseUUID & {
   taskId: number | null
   addr: string
   user: string
   password: string
-  os: string
+  items: Array<BizSSHResultItem>
 }
 
-export type SearchSSHResultParse = Partial<Pick<BizSSHResultParse, 'taskId' | 'os'>>
+export type BizSSHResultItem = BaseUUID & {
+  resultId: number | null
+  key: string
+  name: string
+  value: string
+}
 
-export type SearchSSHResultParseWithPage = Page & SearchSSHResultParse
+export type SearchSSHResult = Partial<Pick<BizSSHResult, 'taskId'>>
 
-export const SearchResultParse = <T = Result>(
-  params: SearchSSHResultParseWithPage,
+export type SearchSSHResultWithPage = Page & SearchSSHResult
+
+export const SearchResult = <T = Result>(
+  params: SearchSSHResultWithPage,
   options?: RequestOptions
 ) => defHttp.get<T>({ url: Api.RunSSHParse, params }, options)

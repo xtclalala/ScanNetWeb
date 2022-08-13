@@ -7,21 +7,17 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func CreateResultPare(dtos []*SSH.BizSSHResultParse) (err error) {
+func CreateResultPare(dtos []SSH.BizSSHResult) (err error) {
 	err = global.Db.Create(&dtos).Error
 	return proError.WrapOrNil(err, "Create ssh task result fail!")
 }
 
-func SearchResultParse(dto *SSH.SearchSSHResultParse) (list []SSH.BizSSHResultParse, total int64, err error) {
+func SearchResultParse(dto *SSH.SearchSSHResult) (list []SSH.BizSSHResult, total int64, err error) {
 	limit := dto.PageSize
 	offset := dto.GetOffset()
-	db := global.Db.Model(&SSH.BizSSHResultParse{}).Where(&SSH.BizSSHResultParse{
+	db := global.Db.Model(&SSH.BizSSHResult{}).Preload("Items").Where(&SSH.BizSSHResult{
 		TaskId: dto.TaskId,
 	})
-
-	if dto.Os != "" {
-		db.Where("os like ?", "%"+dto.Os+"%")
-	}
 
 	oc := clause.OrderByColumn{
 		Column: clause.Column{Name: "create_time", Raw: true},

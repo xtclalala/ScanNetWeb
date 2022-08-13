@@ -52,6 +52,7 @@ const handleDownload = async (file: UploadFileInfo) => {
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
 }
+// @ts-ignore
 const CallBackUpload = ({ file, event }: { file: UploadFileInfo; event?: ProgressEvent }) => {
   if (fileList.value.length > 0) {
     fileList.value.pop()
@@ -311,7 +312,7 @@ const [
   modalStyle,
   handleRegister,
   submitCallback,
-  clearModel,
+  ,
   openModal,
   cancelCallback,
   modalTitle,
