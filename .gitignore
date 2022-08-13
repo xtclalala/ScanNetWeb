@@ -4,7 +4,7 @@
 # Recommended template: Node.gitignore
 
 
-docs/*
+docs/upload/*
 
 test/
 
