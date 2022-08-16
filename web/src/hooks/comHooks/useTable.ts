@@ -6,7 +6,13 @@ import { useClientView } from '@/hooks/comHooks/useClientView'
 const tableMap = {}
 const tableMapStates = {}
 
-export const useTable = <T, D>(dataApi: Function, page: Page, searchObj: D, key: string) => {
+export const useTable = <T, D>(
+  dataApi: Function,
+  page: Page,
+  searchObj: D,
+  key: string,
+  tableHeight = 0.5
+) => {
   // 创建分页对象
   const createTable = (page: Page, key: string) => {
     let pagination, loading, data, searchData
@@ -61,7 +67,7 @@ export const useTable = <T, D>(dataApi: Function, page: Page, searchObj: D, key:
 
   const getTableHeight = () => {
     const { height } = useClientView()
-    return height * 0.5
+    return height * tableHeight
   }
 
   const { pagination, loading, data, searchData } = createTable(page, key)

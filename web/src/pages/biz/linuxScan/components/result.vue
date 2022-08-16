@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { YIcon } from '@/components'
-import { NButton, NSpace } from 'naive-ui'
+import { NSpace } from 'naive-ui'
 import {
   BizSSHResult,
   SearchResult,
@@ -12,11 +11,20 @@ import { PageResult } from '#axios'
 import { Page } from '@/api/common/types/login'
 import { completeMerger } from '@/utils/helper/objectHelper'
 import { useTable } from '@/hooks/comHooks/useTable'
+import { formatToDate } from '@/utils/dateUtil'
+import { isNullOrUnDef } from '@/utils/is'
+import { renderTaskResult } from '@/utils/render'
 
 const show = ref<boolean>(false)
 
-// todo 创建时间 根据创建时间去搜索
 const columns = [
+  {
+    type: 'expand',
+    expandable: () => true,
+    renderExpand: (rowData) => {
+      return renderTaskResult(rowData.items)
+    },
+  },
   {
     title: 'IP',
     key: 'addr',
@@ -32,6 +40,18 @@ const columns = [
     key: 'password',
     width: 150,
   },
+  {
+    title: '创建时间',
+    key: 'createTime',
+    width: 100,
+    render: (row) => formatToDate(new Date(row.createTime)),
+  },
+  {
+    title: '更新时间',
+    key: 'updateTime',
+    width: 100,
+    render: (row) => (isNullOrUnDef(row.updateTime) ? '' : formatToDate(new Date(row.updateTime))),
+  },
 ]
 const sTmpData = {
   taskId: null,
@@ -44,12 +64,13 @@ const tableApi = async (page: Page, searchData: any) => {
     }
   )
 }
-const [pagination, loading, data, searchData, getData, doSearch, doReset, key2id, tableHeight] =
+const [pagination, loading, data, searchData, getData, , , key2id, tableHeight] =
   useTable<BizSSHResult, SearchSSHResult>(
     tableApi,
     { page: 1, pageSize: 10, desc: false },
     sTmpData,
-    'SSHResult'
+    'SSHResult',
+    0.6
   )
 
 const open = (id: number) => {

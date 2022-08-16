@@ -9,10 +9,4 @@ export enum rName {
   REDIRECT_ROUTE = 'RedirectTo',
 
   BIZ_LINUX_SCAN = 'LinuxScan',
-  SYSTEM_MENU = 'Menu',
-  SYSTEM_ROLE = 'Role',
-  SYSTEM_USER = 'User',
-  SYSTEM_ORGAMIZE = 'Organize',
-  ABOUT = 'About',
-  CENTER = 'CenterUser',
 }

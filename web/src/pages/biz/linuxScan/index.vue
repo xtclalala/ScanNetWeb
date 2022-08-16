@@ -35,6 +35,8 @@ import { TaskState, TaskStateMap } from '@/enums/bizEnum'
 import { rName } from '@/enums/rName'
 import { useEmit } from '@/hooks/comHooks/useEmit'
 import BizSshResult from './components/result.vue'
+import { formatToDate } from '@/utils/dateUtil'
+import { isNullOrUnDef } from '@/utils/is'
 
 const message = useMessage()
 const bizSshResultRef = ref<InstanceType<typeof BizSshResult> | null>(null)
@@ -151,6 +153,18 @@ const columns = [
     width: 100,
   },
   {
+    title: '创建时间',
+    key: 'createTime',
+    width: 100,
+    render: (row) => formatToDate(new Date(row.createTime)),
+  },
+  {
+    title: '更新时间',
+    key: 'updateTime',
+    width: 100,
+    render: (row) => (isNullOrUnDef(row.updateTime) ? '' : formatToDate(new Date(row.updateTime))),
+  },
+  {
     title: '操作',
     key: 'actions',
     fixed: 'right',
@@ -257,10 +271,13 @@ const tableApi = async (page: Page, searchData: any) => {
     isMessage: false,
   })
 }
-const [pagination, loading, data, searchData, getData, doSearch, doReset, key2id, tableHeight] = useTable<
-  BizSSH,
-  SearchSSH
->(tableApi, { page: 1, pageSize: 10, desc: false }, sTmpData, rName.BIZ_LINUX_SCAN)
+const [pagination, loading, data, searchData, getData, doSearch, doReset, key2id, tableHeight] =
+  useTable<BizSSH, SearchSSH>(
+    tableApi,
+    { page: 1, pageSize: 10, desc: false },
+    sTmpData,
+    rName.BIZ_LINUX_SCAN
+  )
 
 const rules: FormRules = {
   name: {
@@ -379,7 +396,7 @@ getData({ page: pagination.page, pageSize: pagination.pageSize, desc: false })
     <n-data-table
       :columns="columns"
       :data="data"
-      :scroll-x="1400"
+      :scroll-x="1600"
       :max-height="tableHeight"
       :loading="loading"
       :row-key="key2id"

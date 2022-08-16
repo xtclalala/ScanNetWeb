@@ -7,6 +7,7 @@ import { h, VNodeChild } from 'vue'
 import { YIcon } from '@/components'
 import { TaskState, TaskStateMap } from '@/enums/bizEnum'
 import { NDescriptions, NDescriptionsItem, NEmpty, NTag} from "naive-ui";
+import {BizSSHResultItem} from "@/api/biz/linuxScan";
 
 /**
  * 渲染图标
@@ -126,13 +127,13 @@ export const renderTaskStateDefault = (): VNodeChild =>
   )
 
 export const renderTaskResult = (
-  result: Array<string>,
+  result: Array<BizSSHResultItem>,
   target: 'left' | 'top' = 'left'
 ): VNodeChild => {
   const renderList: Array<VNodeChild> = []
   const l = result.length
-  for (let i = 0; i < l; i = i + 2) {
-    renderList.push(renderTaskResultItem([result[i], result[i + 1]]))
+  for (let i = 0; i < l; i++) {
+    renderList.push(renderTaskResultItem(result[i]))
   }
   if (renderList.length === 0) {
     return h(NEmpty, { description: '暂无扫描结果' })
@@ -140,6 +141,6 @@ export const renderTaskResult = (
   return h(NDescriptions, { labelPlacement: target, column: 1 }, { default: () => renderList })
 }
 
-export const renderTaskResultItem = (result: Array<string>): VNodeChild => {
-  return h(NDescriptionsItem, {}, { label: () => result[0], default: () => result[1] })
+export const renderTaskResultItem = (result: BizSSHResultItem): VNodeChild => {
+  return h(NDescriptionsItem, {}, { label: () => result.name, default: () => result.value })
 }
