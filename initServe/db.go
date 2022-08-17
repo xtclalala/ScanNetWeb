@@ -44,7 +44,7 @@ func InitDb() *gorm.DB {
 	}
 	db, err := gorm.Open(mysql.New(mysqlConfig), &gormConfig)
 	if err != nil {
-		panic(fmt.Errorf("连接数据库失败:%s", err))
+		global.Log.Panic("连接数据库失败:%s", err)
 	}
 
 	sqlDb, _ := db.DB()
@@ -58,9 +58,9 @@ func InitTables(db *gorm.DB) {
 	// 加 model
 	err := db.AutoMigrate(&SSH.BizSSH{}, &file.BizFile{}, &SSH.BizSSHResult{}, &SSH.BizSSHResultItem{})
 	if err != nil {
-		panic(fmt.Errorf("table of database create failed:", err))
+		global.Log.Panic("table of database create failed:", err)
 	}
 	// 设置其他引擎
 	//db.Set("gorm:table_options", "ENGINE=MyIsAm").AutoMigrate()
-	fmt.Println("table of database create successfully")
+	global.Log.Debug("table of database create successfully")
 }

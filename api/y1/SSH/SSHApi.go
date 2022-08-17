@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 	"github.com/xtclalala/ScanNetWeb/constant"
+	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/internal/net"
 	"github.com/xtclalala/ScanNetWeb/internal/proError"
 	"github.com/xtclalala/ScanNetWeb/internal/validator"
@@ -25,6 +26,7 @@ func Search(c *gin.Context) {
 		return
 	}
 	list, total, err := service.Search(&data)
+	global.Log.DebugGin(c, "this is a req id test")
 	if err != nil {
 		net.FailWhitStatus(proError.SearchTaskError, c)
 		return

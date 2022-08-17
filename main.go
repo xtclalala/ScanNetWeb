@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/xtclalala/ScanNetWeb/global"
 	"github.com/xtclalala/ScanNetWeb/initServe"
+	"github.com/xtclalala/ScanNetWeb/internal/proLog"
 	"github.com/zserge/lorca"
 	"gorm.io/gorm"
 	"io/fs"
@@ -22,6 +23,7 @@ var FS embed.FS
 func main() {
 	// do init server
 	global.Viper = initServe.InitConfig()
+	global.Log = proLog.InitLogger(global.System.Logger.FilePath, global.System.Logger.FileName)
 	global.Db = initServe.InitDb()
 	if global.Db != nil {
 		initServe.InitTables(global.Db)

@@ -3,53 +3,20 @@ package middleware
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	rotate "github.com/lestrrat-go/file-rotatelogs"
-	"github.com/rifflock/lfshook"
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 	"github.com/xtclalala/ScanNetWeb/global"
 	"os"
-	"path"
 	"time"
 )
 
 func LogToFile() gin.HandlerFunc {
-	logConfig := global.System.Logger
-	FilePath := logConfig.FilePath
-	FileName := logConfig.FileName
 
-	file := path.Join(FilePath, FileName+".log")
-	fmt.Println("日志文件路径:", file)
-	scr, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE, 0755)
-	if err != nil {
-		fmt.Println("err:", err)
-	}
-	logger := logrus.New()
-
-	logger.Out = scr
-
-	logger.SetLevel(logrus.DebugLevel)
-
-	logWriter, _ := rotate.New(
-		file+"-%Y-%m-%d.log",
-		rotate.WithMaxAge(180*24*time.Hour),
-		rotate.WithRotationTime(24*time.Hour),
-	)
-
-	writeMap := lfshook.WriterMap{
-		logrus.InfoLevel:  logWriter,
-		logrus.FatalLevel: logWriter,
-		logrus.DebugLevel: logWriter,
-		logrus.WarnLevel:  logWriter,
-		logrus.ErrorLevel: logWriter,
-		logrus.PanicLevel: logWriter,
-	}
-	Hook := lfshook.NewHook(writeMap, &logrus.TextFormatter{
-		TimestampFormat: "2006-01-02 15:04:05",
-	})
-
-	logger.AddHook(Hook)
-
+	logger := global.Log.InfoLog
+	req, _ := uuid.NewUUID()
+	reqId := req.String()
 	return func(c *gin.Context) {
+		c.Set("reqId", reqId)
 		startTime := time.Now()
 		c.Next()
 		stopTime := time.Since(startTime).Milliseconds()
@@ -69,6 +36,7 @@ func LogToFile() gin.HandlerFunc {
 		pathUrl := c.Request.RequestURI
 
 		entry := logger.WithFields(logrus.Fields{
+			"RequestId": reqId,
 			"HostName":  hostName,
 			"status":    statusCode,
 			"SpendTime": spendTime,
